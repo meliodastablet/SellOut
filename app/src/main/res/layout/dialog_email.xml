@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@mipmap/back_login"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/forpass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@mipmap/email"
+        android:drawablePadding="5dp"
+        android:layout_marginTop="300dp"
+        android:ems="10"
+        android:gravity="center_vertical"
+        android:hint="E-Posta adresinizi giriniz"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="0dp"
+        android:textColor="#FFF"
+        android:textColorHint="#999" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="200dp"
+        android:background="@drawable/selector_xml_btn_yellow"
+        android:text="Parolamı Unuttum" />
+
+</LinearLayout>

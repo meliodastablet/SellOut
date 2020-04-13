@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "191518085946",
+    "firebase_url": "https://sellout-bda2b.firebaseio.com",
+    "project_id": "sellout-bda2b",
+    "storage_bucket": "sellout-bda2b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:191518085946:android:096084e4292bf16df23603",
+        "android_client_info": {
+          "package_name": "com.mcakiroglu.sellout"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "191518085946-gnkju5iuqpbcf0hol6gloetv46bm98qk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByQi015AgRQ_yOBIc4Y2JiHj-G3UaSh24"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "191518085946-gnkju5iuqpbcf0hol6gloetv46bm98qk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "191518085946-o38anua8timovo727u10016nhmtrqhde.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.anilberkaydin.SellOut"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
