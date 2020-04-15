@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainPage">
+    tools:context=".activities.MainPage">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -21,5 +21,14 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_main_page" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/botnav"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_gravity="bottom"
+        app:labelVisibilityMode="labeled"
+        android:theme="@style/Widget.MaterialComponents.BottomNavigationView"
+        app:menu="@menu/bottom_nav"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

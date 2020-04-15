@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.mcakiroglu.sellout.ui.home.HomeFragment"
+        android:name="com.mcakiroglu.sellout.fragments.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home">
 
@@ -31,13 +31,19 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.mcakiroglu.sellout.ui.gallery.GalleryFragment"
+        android:name="com.mcakiroglu.sellout.fragments.ElektronikFragment"
         android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_elektronik" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.mcakiroglu.sellout.ui.slideshow.SlideshowFragment"
+        android:name="com.mcakiroglu.sellout.fragments.CepTelefonuFragment"
         android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_ceptelefonu" />
+
+    <fragment
+        android:id="@+id/nav_araba"
+        android:name="com.mcakiroglu.sellout.fragments.ArabaFragment"
+        android:label="@string/menu_araba"
+        tools:layout="@layout/fragment_araba" />
 </navigation>

@@ -1,4 +1,4 @@
-package com.mcakiroglu.sellout;
+package com.mcakiroglu.sellout.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +15,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.mcakiroglu.sellout.ForgotPassword;
+import com.mcakiroglu.sellout.R;
 import com.mcakiroglu.sellout.databinding.ActivityMainBinding;
 
 import java.util.regex.Pattern;
@@ -104,7 +106,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                             Toast.makeText(Login.this,
                                     "Giriş başarılı.",
                                     Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(Login.this,MainPage.class);
+                            Intent intent = new Intent(Login.this, MainPage.class);
                             startActivity(intent);
 
 
@@ -138,11 +140,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             signIn(binding.username.getText().toString(), binding.password.getText().toString());
 
         }else if(v.getId() == R.id.textView3){
-            Intent intent = new Intent(this,ForgotPassword.class);
+            Intent intent = new Intent(this, ForgotPassword.class);
             startActivity(intent);
 
         }else if (v.getId()==R.id.textView){
-            Intent intent = new Intent(this,Register.class);
+            Intent intent = new Intent(this, Register.class);
             startActivity(intent);
         }
 
