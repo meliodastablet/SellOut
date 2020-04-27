@@ -17,15 +17,18 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.mcakiroglu.sellout.R;
 import com.mcakiroglu.sellout.activities.Property;
 import com.mcakiroglu.sellout.adapter.MyStuffAdapter;
 import com.mcakiroglu.sellout.databinding.FragmentElektronikBinding;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class ElektronikFragment extends Fragment {
+public class ElektronikFragment extends Fragment implements View.OnClickListener {
 
     RecyclerView recyclerView;
     FragmentElektronikBinding binding;
@@ -39,7 +42,7 @@ public class ElektronikFragment extends Fragment {
 
         binding = FragmentElektronikBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
-
+        binding.buttonx.setOnClickListener(this);
 
         return view;
     }
@@ -69,12 +72,13 @@ public class ElektronikFragment extends Fragment {
 
 
     protected void handlers() {
+        Query q = mDatabase.child("categories").child("Elektronik").orderByChild("price");
 
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        q.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                DataSnapshot prop = dataSnapshot.child("categories").child("Elektronik");
-                Iterable<DataSnapshot> propdetails =prop.getChildren();
+
+                Iterable<DataSnapshot> propdetails =dataSnapshot.getChildren();
                 for(DataSnapshot snap :propdetails){
 
                     Property p =snap.getValue(Property.class);
@@ -104,6 +108,7 @@ public class ElektronikFragment extends Fragment {
         if(a.isEmpty() && active){
 
         }
+        Collections.reverse(a);
         MyStuffAdapter adapter = new MyStuffAdapter(getContext(),a);
         recyclerView.setAdapter(adapter);
 
@@ -120,5 +125,13 @@ public class ElektronikFragment extends Fragment {
     public void onStop() {
         super.onStop();
         active = false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.buttonx){
+
+            custom(pro);
+        }
     }
 }

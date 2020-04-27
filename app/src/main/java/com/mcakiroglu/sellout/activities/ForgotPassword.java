@@ -1,4 +1,4 @@
-package com.mcakiroglu.sellout;
+package com.mcakiroglu.sellout.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.mcakiroglu.sellout.R;
 import com.mcakiroglu.sellout.databinding.DialogEmailBinding;
 
 public class ForgotPassword extends AppCompatActivity implements View.OnClickListener {

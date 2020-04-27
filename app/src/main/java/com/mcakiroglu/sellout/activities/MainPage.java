@@ -6,12 +6,17 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.mcakiroglu.sellout.R;
+import com.mcakiroglu.sellout.databinding.ActivityMainPageBinding;
 import com.mcakiroglu.sellout.databinding.NavHeaderMainPageBinding;
 
 import androidx.annotation.NonNull;
@@ -23,23 +28,42 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.io.IOException;
+
 
 public class MainPage extends AppCompatActivity{
-    NavHeaderMainPageBinding binding;
 
+
+    ActivityMainPageBinding mainPageBinding;
     private AppBarConfiguration mAppBarConfiguration;
     BottomNavigationView bnw;
     private FirebaseAuth mAuth;
 
+    FirebaseUser user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_page);
+        mainPageBinding = ActivityMainPageBinding.inflate(getLayoutInflater());
+        View view = mainPageBinding.getRoot();
+        setContentView(view);
+
+        NavigationView nw = findViewById(R.id.nav_view);
+        View head = nw.getHeaderView(0);
+
+        TextView tw = head.findViewById(R.id.mailx);
+        TextView tw2 = head.findViewById(R.id.nickx);
+        ImageView iw = head.findViewById(R.id.imageViewx);
+
         mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
+        tw2.setText(user.getDisplayName());
+        tw.setText(user.getEmail());
+        Glide.with(this).load(user.getPhotoUrl()).into(iw);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        bnw = (BottomNavigationView) findViewById(R.id.botnav);
+
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -51,7 +75,7 @@ public class MainPage extends AppCompatActivity{
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
+        bnw = (BottomNavigationView) findViewById(R.id.botnav);
         bnw.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

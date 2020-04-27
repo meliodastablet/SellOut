@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -16,6 +17,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -87,19 +89,20 @@ boolean flag = false;
         final String name2 = kadi2;
         System.out.println("STEP1");
 
-        ref = FirebaseDatabase.getInstance().getReference().child("users");
+        ref = FirebaseDatabase.getInstance().getReference().child("usernames");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 System.out.println("STEP2");
                 for(DataSnapshot data: dataSnapshot.getChildren()) {
-                    if (data.child("username").getValue().equals(name2)) {
+                    if (data.getKey().equals(name2)) {
                         System.out.println("STEP2.5V1");
                         flag = true;
-                        System.out.println(flag + "name2" + name2 + data.child("username").getValue());
+                        binding.kadi.setError("Bu kullanıcı adı çoktan seçilmiş.");
+                        System.out.println(flag + "name2" + name2 + data.getKey());
                     } else {
                         System.out.println("STEP2.5V2");
-                        System.out.println(flag + "name2else" + name2 + data.child("username").getValue());
+                        System.out.println(flag + "name2else" + name2 + data.getKey());
                     }
                 }
             }
@@ -113,13 +116,7 @@ boolean flag = false;
 
         if (TextUtils.isEmpty(kadi2)) {
             binding.kadi.setError("Bu alanı doldurmak zorunludur.");
-            valid = false;
-        } else if(flag){
-            System.out.println("STEP4");
-            binding.kadi.setError("Bu kullanıcı adı çoktan seçilmiş.");
-            valid = false;
-            flag = false;
-        }
+            valid = false;}
         else {
             System.out.println("STEP4V2");
             binding.kadi.setError(null);
@@ -161,12 +158,15 @@ boolean flag = false;
         return regex.matcher(password).find();
     }
 
-    private void createAccount(final String email, final String password) {
+    private void createAccount(final String email, final String password, final String kadi) {
+
 
 
         if (!validateForm()) {
             return;
         }
+
+
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -178,11 +178,28 @@ boolean flag = false;
                             FirebaseUser user = mAuth.getCurrentUser();
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             DatabaseReference myRef = database.getReference("users");
+                            DatabaseReference myRef2 = database.getReference("usernames");
+                            myRef2.child(kadi).setValue(user.getUid());
                             myRef.child(user.getUid()).child("email").setValue(email);
                             myRef.child(user.getUid()).child("username").setValue(binding.kadi.getText().toString());
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(kadi)
+                                    .setPhotoUri(Uri.parse("https://firebasestorage.googleapis.com/v0/b/sellout-bda2b.appspot.com/o/plus.png?alt=media&token=49d992c7-d613-4c47-a63f-30eaecd1247a"))
+                                    .build();
 
-                            Toast.makeText(Register.this, "Hesap oluşturma başarılı, artık giriş yapabilirsiniz.",
-                                    Toast.LENGTH_SHORT).show();
+                            user.updateProfile(profileUpdates)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(Register.this, "Hesap oluşturma başarılı, artık giriş yapabilirsiniz.",
+                                                        Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(getApplicationContext(),Login.class);
+                                                startActivity(intent);
+                                            }
+                                        }
+                                    });
+
 
 
                         } else
@@ -204,7 +221,7 @@ boolean flag = false;
     public void onClick(View v) {
 
         if (v.getId() == R.id.register){
-            createAccount(binding.email.getText().toString(),binding.pass.getText().toString());
+            createAccount(binding.email.getText().toString(),binding.pass.getText().toString(),binding.kadi.getText().toString());
 
 
         }else if(v.getId() == R.id.textView2){

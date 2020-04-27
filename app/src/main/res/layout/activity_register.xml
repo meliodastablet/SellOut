@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@mipmap/back_login"
-    android:padding="40dp">
+    android:padding="100dp">
 
     <EditText
     android:id="@+id/kadi"
