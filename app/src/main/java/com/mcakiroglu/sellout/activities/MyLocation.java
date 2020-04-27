@@ -30,9 +30,9 @@ import java.util.List;
 import java.util.Locale;
 
 public class MyLocation extends FragmentActivity implements GoogleMap.OnMyLocationButtonClickListener,OnMapReadyCallback {
-
+    String s;
     Marker marker;
-   String s;
+    LatLng coor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +81,7 @@ public class MyLocation extends FragmentActivity implements GoogleMap.OnMyLocati
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(s == null || s.length() == 0){
+                if(coor == null){
                     Toast.makeText(MyLocation.this, "Bir konum seçin" , Toast.LENGTH_SHORT).show();
                 }
                 else{
@@ -103,20 +103,20 @@ public class MyLocation extends FragmentActivity implements GoogleMap.OnMyLocati
                         .position(latLng)
                         .title("Konumunuz İşaretlendi!"));
                 Locale locale = new Locale("tr", "TR");
-                Geocoder geocoder = new Geocoder(getApplicationContext(), locale);
+                Geocoder geocoder = new Geocoder(getApplicationContext(), locale );
                 if(geocoder.isPresent()){
                     try {
 
                         List<Address> list =geocoder.getFromLocation(latLng.latitude,latLng.longitude,10);
                         Address address = list.get(0);
                         s = address.getAddressLine(0);
-
+                        System.out.println(s);
                     } catch (IOException e) {
                         System.out.println("Rror");
                     }
                 }
 
-
+                coor = latLng;
             }
         });
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
