@@ -2,9 +2,15 @@ package com.mcakiroglu.sellout.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -37,7 +43,9 @@ import java.util.Date;
 
 public class NewStuff extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     BottomNavigationView bnw;
+    int LAUNCH_SECOND_ACTIVITY = 1;
     ActivityNewStuffBinding binding;
+    final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION=30;
     private Uri filePath2,filePath3,filePath4,filePath5;
     private ArrayList<Uri> filePathr = new ArrayList<>();
     private int kk=1;
@@ -52,7 +60,7 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
     boolean flag2 =false;
     int jk = 0;
     String uid;
-    private final int PICK_IMAGE_REQUEST = 71;
+    private final int PICK_IMAGE_REQUEST = 99;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -194,6 +202,24 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
 
 
             }
+        }else if(v.getId() == R.id.address){
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+
+
+
+
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+
+
+
+            } else {
+                location();
+            }
         }
 
     }
@@ -240,6 +266,15 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
 
 
             flag2 = true;
+        }
+        if (requestCode == LAUNCH_SECOND_ACTIVITY) {
+            if(resultCode == Activity.RESULT_OK){
+                String result=data.getStringExtra("result");
+                binding.address.setText(result);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //no result
+            }
         }
     }
 
@@ -349,6 +384,38 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
         }
 
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    location();
+                    System.out.println("yay");
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                   Toast.makeText(this,"Lütfen konum erişimine izin verin",Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+
+        }
+    }
+
+    public void location(){
+
+        Intent intent = new Intent(this,MyLocation.class);
+        startActivityForResult(intent,LAUNCH_SECOND_ACTIVITY);
+
+    }
+
 
 
 }

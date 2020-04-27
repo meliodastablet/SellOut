@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <uses-permission-sdk-23 android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -18,7 +17,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.DisplayStuff"></activity>
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCbMerCl2AE6U_c2oujuuV6h3XlwMx1_Mg"/>
+
+
+        <activity android:name=".activities.MyLocation"></activity>
+        <activity android:name=".activities.DisplayStuff" />
         <activity android:name=".activities.Profile" />
         <activity android:name=".activities.Messages" />
         <activity android:name=".activities.NewStuff" />
@@ -26,7 +30,7 @@
         <activity
             android:name=".activities.MainPage"
             android:label="@string/title_activity_main_page"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.ForgotPassword" />
         <activity android:name=".activities.Register" />
         <activity android:name=".activities.Login">
