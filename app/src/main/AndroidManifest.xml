@@ -17,11 +17,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCbMerCl2AE6U_c2oujuuV6h3XlwMx1_Mg"/>
+        <activity android:name=".activities.ShowOnMap"></activity>
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCbMerCl2AE6U_c2oujuuV6h3XlwMx1_Mg" />
 
-        <activity android:name=".activities.MyLocation"></activity>
+        <activity android:name=".activities.MyLocation" />
         <activity android:name=".activities.DisplayStuff" />
         <activity android:name=".activities.Profile" />
         <activity android:name=".activities.Messages" />

@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class MyLocation extends FragmentActivity implements GoogleMap.OnMyLocationButtonClickListener,OnMapReadyCallback {
-    String s;
+    String s,city;
     Marker marker;
     LatLng coor;
     @Override
@@ -87,8 +87,11 @@ public class MyLocation extends FragmentActivity implements GoogleMap.OnMyLocati
                 else{
                     Intent returnIntent = new Intent();
                     returnIntent.putExtra("result",s);
-                   setResult(Activity.RESULT_OK,returnIntent);
-                   finish();
+                    returnIntent.putExtra("lat",coor.latitude);
+                    returnIntent.putExtra("lon",coor.longitude);
+                    returnIntent.putExtra("city",city);
+                    setResult(Activity.RESULT_OK,returnIntent);
+                    finish();
                 }
             }
         });
@@ -110,7 +113,7 @@ public class MyLocation extends FragmentActivity implements GoogleMap.OnMyLocati
                         List<Address> list =geocoder.getFromLocation(latLng.latitude,latLng.longitude,10);
                         Address address = list.get(0);
                         s = address.getAddressLine(0);
-                        System.out.println(s);
+                        city = address.getAdminArea();
                     } catch (IOException e) {
                         System.out.println("Rror");
                     }

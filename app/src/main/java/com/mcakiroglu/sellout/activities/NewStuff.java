@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -51,6 +52,7 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
     private int kk=1;
     Spinner spinner;
     String pid;
+    String result;
     private FirebaseAuth mAuth;
     String spinnerres;
     FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -59,7 +61,8 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
     private DatabaseReference propid;
     boolean flag2 =false;
     int jk = 0;
-    String uid;
+    String uid,city;
+    double lat,lon;
     private final int PICK_IMAGE_REQUEST = 99;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +152,10 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
                 binding.desc.setError("Bu alan zorunludur.");
                 flag = false;
             }
+            if(binding.address.getText().toString().equals("")){
+                binding.address.setError("Bu alan zorunludur.");
+                flag = false;
+            }
             if (spinnerres.equals("Kategori Seçiniz")) {
                 Toast.makeText(this, "Kategori seçiniz", Toast.LENGTH_SHORT).show();
                 flag = false;
@@ -180,17 +187,35 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
 
                 mDatabase.child("usersProducts").child(uid).child(pid).child("category").setValue(spinnerres);
                 mDatabase.child("usersProducts").child(uid).child(pid).child("status").setValue("0");
-                mDatabase.child("usersProducts").child(uid).child(pid).child("adress").setValue("buraya bakarlar");
+                mDatabase.child("usersProducts").child(uid).child(pid).child("adress").setValue(result);
+                mDatabase.child("usersProducts").child(uid).child(pid).child("lat").setValue(lat);
+                mDatabase.child("usersProducts").child(uid).child(pid).child("long").setValue(lon);
+                mDatabase.child("usersProducts").child(uid).child(pid).child("city").setValue(city);
 
 
 
 
-                mDatabase.child("categories").child(spinnerres).child(pid).child("adress").setValue("buraya bakarlar");
+                mDatabase.child("categories").child(spinnerres).child(pid).child("adress").setValue(result);
                 mDatabase.child("categories").child(spinnerres).child(pid).child("comment").setValue(binding.desc.getText().toString());
                 mDatabase.child("categories").child(spinnerres).child(pid).child("date").setValue(formatted);
                 mDatabase.child("categories").child(spinnerres).child(pid).child("name").setValue(binding.pname.getText().toString());
                 mDatabase.child("categories").child(spinnerres).child(pid).child("price").setValue(Double.parseDouble(binding.pricee.getText().toString()));
                 mDatabase.child("categories").child(spinnerres).child(pid).child("status").setValue("0");
+                mDatabase.child("categories").child(spinnerres).child(pid).child("city").setValue(city);
+                mDatabase.child("categories").child(spinnerres).child(pid).child("lat").setValue(lat);
+                mDatabase.child("categories").child(spinnerres).child(pid).child("long").setValue(lon);
+
+
+                mDatabase.child("cityProducts").child(city).child(pid).child("city").setValue(city);
+                mDatabase.child("cityProducts").child(city).child(pid).child("lat").setValue(lat);
+                mDatabase.child("cityProducts").child(city).child(pid).child("lon").setValue(lon);
+                mDatabase.child("cityProducts").child(city).child(pid).child("name").setValue(binding.pname.getText().toString());
+                mDatabase.child("cityProducts").child(city).child(pid).child("price").setValue(Double.parseDouble(binding.pricee.getText().toString()));
+
+
+
+
+
 
 
 
@@ -269,8 +294,12 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
         }
         if (requestCode == LAUNCH_SECOND_ACTIVITY) {
             if(resultCode == Activity.RESULT_OK){
-                String result=data.getStringExtra("result");
+                result=data.getStringExtra("result");
+                city=data.getStringExtra("city");
                 binding.address.setText(result);
+                lat = data.getDoubleExtra("lat",0);
+                lon = data.getDoubleExtra("lon",0);
+                System.out.println("aaa" +result + city + lat + lon);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //no result
@@ -359,6 +388,7 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
                                 if(kk == 1) {
                                     mDatabase.child("usersProducts").child(uid).child(pid).child("image1").setValue(urli);
                                     mDatabase.child("categories").child(spinnerres).child(pid).child("image1").setValue(urli);
+                                    mDatabase.child("cityProducts").child(city).child(pid).child("image1").setValue(urli);
                                 }
                                 else if(kk == 2){
                                     mDatabase.child("usersProducts").child(uid).child(pid).child("image2").setValue(urli);

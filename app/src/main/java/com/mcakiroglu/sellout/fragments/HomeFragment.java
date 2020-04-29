@@ -1,5 +1,6 @@
 package com.mcakiroglu.sellout.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,17 +24,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mcakiroglu.sellout.R;
+import com.mcakiroglu.sellout.activities.Nearby;
 import com.mcakiroglu.sellout.activities.Property;
+import com.mcakiroglu.sellout.activities.ShowOnMap;
 import com.mcakiroglu.sellout.adapter.MyStuffAdapter;
 import com.mcakiroglu.sellout.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements View.OnClickListener {
 
 
     RecyclerView recyclerView;
     FragmentHomeBinding binding;
+    GoogleMap googleMap;
+    ArrayList<Nearby> near = new ArrayList<>();
     String uid;
     public ArrayList<Property> pro =new ArrayList<>();
     private FirebaseAuth mAuth;
@@ -63,6 +69,7 @@ public class HomeFragment extends Fragment {
 
 
     protected void init() {
+        binding.geol.setOnClickListener(this);
         recyclerView = binding.recyclerView6;
         mAuth = FirebaseAuth.getInstance();
         final FirebaseUser user = mAuth.getCurrentUser();
@@ -73,6 +80,27 @@ public class HomeFragment extends Fragment {
 
 
     protected void handlers() {
+
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                DataSnapshot prop = dataSnapshot.child("cityProducts").child("Ankara");
+                Iterable<DataSnapshot> propdetails =prop.getChildren();
+                for(DataSnapshot snap :propdetails){
+
+                    Nearby n =snap.getValue(Nearby.class);
+                    System.out.println("nanana" + n.toString());
+                    near.add(n);
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -95,6 +123,10 @@ public class HomeFragment extends Fragment {
 
             }
         });
+
+
+
+
 
     }
 
@@ -123,5 +155,14 @@ public class HomeFragment extends Fragment {
     public void onStop() {
         super.onStop();
         active = false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.geol){
+            Intent intent = new Intent(getContext(), ShowOnMap.class);
+            intent.putExtra("array",near);
+            startActivity(intent);
+        }
     }
 }

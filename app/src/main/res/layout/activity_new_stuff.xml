@@ -122,7 +122,7 @@
 
             <EditText
                 android:id="@+id/address"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_xml_btn_yellow"
                 android:layout_marginTop="30dp"

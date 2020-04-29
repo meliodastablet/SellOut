@@ -4,22 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/ping"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/yellow"
-        android:text="TAMAMLANDI" />
+
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/map"
+        android:id="@+id/mapp"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
-         />
+/>
     <Button
         android:text="Uydu"
         android:layout_width="wrap_content"
@@ -29,7 +22,7 @@
         android:background="@color/colorPrimary"
 
         android:textColor="@color/yellow"
-        android:id="@+id/sat" />
+        android:id="@+id/satt" />
 
 
 
