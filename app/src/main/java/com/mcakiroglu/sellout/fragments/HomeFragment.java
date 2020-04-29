@@ -1,14 +1,19 @@
 package com.mcakiroglu.sellout.fragments;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -37,8 +42,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     RecyclerView recyclerView;
     FragmentHomeBinding binding;
-    GoogleMap googleMap;
-    ArrayList<Nearby> near = new ArrayList<>();
+    final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION=30;
+
     String uid;
     public ArrayList<Property> pro =new ArrayList<>();
     private FirebaseAuth mAuth;
@@ -81,26 +86,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     protected void handlers() {
 
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                DataSnapshot prop = dataSnapshot.child("cityProducts").child("Ankara");
-                Iterable<DataSnapshot> propdetails =prop.getChildren();
-                for(DataSnapshot snap :propdetails){
 
-                    Nearby n =snap.getValue(Nearby.class);
-                    System.out.println("nanana" + n.toString());
-                    near.add(n);
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -160,9 +146,55 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.geol){
-            Intent intent = new Intent(getContext(), ShowOnMap.class);
-            intent.putExtra("array",near);
-            startActivity(intent);
+            if (ContextCompat.checkSelfPermission(getContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+
+
+
+
+                requestPermissions(
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+
+
+
+            } else {
+                location();
+            }
+
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    location();
+                    System.out.println("yay");
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(getContext(),"Lütfen konum erişimine izin verin",Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+
+        }
+    }
+
+    public void location(){
+
+        Intent intent = new Intent(getContext(), ShowOnMap.class);
+        startActivity(intent);
+
     }
 }
