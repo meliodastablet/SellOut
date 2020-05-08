@@ -14,6 +14,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -109,6 +110,8 @@ public class ShowOnMap extends AppCompatActivity implements OnMapReadyCallback {
 
         Locale locale = new Locale("tr", "TR");
         Geocoder geocoder = new Geocoder(getApplicationContext(), locale);
+
+
         if(geocoder.isPresent()){
             try {
 
@@ -117,6 +120,10 @@ public class ShowOnMap extends AppCompatActivity implements OnMapReadyCallback {
                 city = address.getAdminArea();
             } catch (IOException e) {
                 System.out.println("Rror");
+                Intent intent = new Intent(this,MainPage.class);
+                Toast.makeText(this,"Harita kullanılamıyor",Toast.LENGTH_SHORT);
+                startActivity(intent);
+
             }
         }
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng( locationx.getLatitude(), locationx.getLongitude()),8));

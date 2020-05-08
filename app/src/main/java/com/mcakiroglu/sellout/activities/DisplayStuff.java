@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 public class DisplayStuff extends AppCompatActivity implements View.OnClickListener {
     ActivityDisplayStuffBinding binding;
+    Property prop;
     int k = 0;
     private DatabaseReference mDatabase;
     ArrayList<String> a = new ArrayList<>();
@@ -28,7 +29,7 @@ public class DisplayStuff extends AppCompatActivity implements View.OnClickListe
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         Intent intent = getIntent();
-        Property prop = (Property)intent.getSerializableExtra("prop");
+        prop = (Property)intent.getSerializableExtra("prop");
 
         binding.urunadi.setText("Ürün İsmi: " + prop.getName());
         binding.ilantarihi.setText("İlan Tarihi: " +prop.getDate());
@@ -107,10 +108,10 @@ public class DisplayStuff extends AppCompatActivity implements View.OnClickListe
 
 
         }else if(v.getId() == R.id.iptal){
-           // mDatabase.child("usersProducts").child(uid).child(pid).child("status").setValue(binding.desc.getText().toString());
+           //mDatabase.child("usersProducts").child(uid).child(pid).child("status").setValue(binding.desc.getText().toString());
 
         } else if(v.getId() == R.id.msend){
-                Intent intent = new Intent(this,Messages.class);
+                Intent intent = new Intent(this,Messaging.class);
                 startActivity(intent);
         }else if(v.getId() == R.id.markassold){
             //mDatabase.child("usersProducts").child(uid).child(pid).child("comment").setValue(binding.desc.getText().toString());

@@ -1,22 +1,53 @@
 package com.mcakiroglu.sellout.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mcakiroglu.sellout.R;
+
+import java.sql.SQLOutput;
+import java.util.ArrayList;
+
+import static com.mcakiroglu.sellout.R.layout.activity_messages;
 
 public class Messages extends AppCompatActivity {
     BottomNavigationView bnw;
+    DatabaseReference ref;
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseUser user = auth.getCurrentUser();
+    ArrayList<String> ids = new ArrayList<>();
+
+    ListView uList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_messages);
+        setContentView(activity_messages);
 
+
+        uList = findViewById(R.id.listw);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        ref = database.getReference("messages");
         bnw = (BottomNavigationView) findViewById(R.id.botnav4);
         bnw.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -48,5 +79,52 @@ public class Messages extends AppCompatActivity {
 
             }
         });
+
+ref.child(user.getUid()).addValueEventListener(new ValueEventListener() {
+    @Override
+    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        System.out.println(dataSnapshot.toString());
+        Iterable<DataSnapshot> iterable =dataSnapshot.getChildren();
+        for(DataSnapshot snap :iterable) {
+            ids.add(snap.getKey());
+        }
+
+        System.out.println("FC" + ids.toString());
+        ArrayAdapter adapter = new ArrayAdapter<String>(Messages.this,R.layout.simple_list_item_1,ids);
+        uList.setAdapter(adapter);
+        uList.setVisibility(View.VISIBLE);
+
+
     }
+    @Override
+    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+    }
+
+
+
+
+
+
+
+
+});
+
+uList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(Messages.this,Messaging.class);
+        intent.putExtra("toid",ids.get(position));
+        startActivity(intent);
+    }
+});
+
+
+
+    }
+
+    public void onBackPressed(){
+        startActivity(new Intent(Messages.this,MainPage.class));
+    }
+
 }

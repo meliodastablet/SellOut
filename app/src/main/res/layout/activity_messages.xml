@@ -7,6 +7,12 @@
     android:orientation="vertical"
     tools:context=".activities.Messages">
 
+
+    <ListView
+        android:id="@+id/listw"
+        android:layout_width="match_parent"
+        android:layout_height="548dp" />
+
     <TableLayout
         android:gravity="bottom"
         android:layout_width="match_parent"

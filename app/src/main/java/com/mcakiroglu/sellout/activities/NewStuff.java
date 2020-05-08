@@ -152,8 +152,8 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
                 binding.desc.setError("Bu alan zorunludur.");
                 flag = false;
             }
-            if(binding.address.getText().toString().equals("")){
-                binding.address.setError("Bu alan zorunludur.");
+            if(binding.address2.getText().toString().equals("")){
+                binding.address2.setError("Bu alan zorunludur.");
                 flag = false;
             }
             if (spinnerres.equals("Kategori Seçiniz")) {
@@ -296,7 +296,7 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
             if(resultCode == Activity.RESULT_OK){
                 result=data.getStringExtra("result");
                 city=data.getStringExtra("city");
-                binding.address.setText(result);
+                binding.address2.setText(result);
                 lat = data.getDoubleExtra("lat",0);
                 lon = data.getDoubleExtra("lon",0);
                 System.out.println("aaa" +result + city + lat + lon);
