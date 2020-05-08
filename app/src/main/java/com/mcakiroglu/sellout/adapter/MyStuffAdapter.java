@@ -8,14 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mcakiroglu.sellout.activities.DisplayStuff;
-import com.mcakiroglu.sellout.activities.Property;
+import com.mcakiroglu.sellout.models.Property;
 import com.mcakiroglu.sellout.R;
 
 import java.util.ArrayList;

@@ -31,10 +31,11 @@ import static com.mcakiroglu.sellout.R.layout.activity_messages;
 
 public class Messages extends AppCompatActivity {
     BottomNavigationView bnw;
-    DatabaseReference ref;
+    DatabaseReference ref,ref2;
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseUser user = auth.getCurrentUser();
     ArrayList<String> ids = new ArrayList<>();
+    ArrayList<String> names = new ArrayList<>();
 
     ListView uList;
 
@@ -46,8 +47,9 @@ public class Messages extends AppCompatActivity {
 
         uList = findViewById(R.id.listw);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
         ref = database.getReference("messages");
+        ref2 = database.getReference("users");
         bnw = (BottomNavigationView) findViewById(R.id.botnav4);
         bnw.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -87,10 +89,28 @@ ref.child(user.getUid()).addValueEventListener(new ValueEventListener() {
         Iterable<DataSnapshot> iterable =dataSnapshot.getChildren();
         for(DataSnapshot snap :iterable) {
             ids.add(snap.getKey());
+            ref2.child(snap.getKey()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    names.add(dataSnapshot.child("username").getValue().toString());
+                    uList.invalidateViews();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
+
         }
 
+
         System.out.println("FC" + ids.toString());
-        ArrayAdapter adapter = new ArrayAdapter<String>(Messages.this,R.layout.simple_list_item_1,ids);
+
+        ArrayAdapter adapter;
+        adapter= new ArrayAdapter<String>(Messages.this,R.layout.simple_list_item_1,names);
         uList.setAdapter(adapter);
         uList.setVisibility(View.VISIBLE);
 

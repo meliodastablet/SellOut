@@ -22,7 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.mcakiroglu.sellout.R;
-import com.mcakiroglu.sellout.activities.Property;
+import com.mcakiroglu.sellout.models.Property;
 import com.mcakiroglu.sellout.adapter.MyStuffAdapter;
 import com.mcakiroglu.sellout.databinding.FragmentArabaBinding;
 

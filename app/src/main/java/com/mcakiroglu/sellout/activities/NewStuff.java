@@ -195,6 +195,7 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
 
 
 
+
                 mDatabase.child("categories").child(spinnerres).child(pid).child("adress").setValue(result);
                 mDatabase.child("categories").child(spinnerres).child(pid).child("comment").setValue(binding.desc.getText().toString());
                 mDatabase.child("categories").child(spinnerres).child(pid).child("date").setValue(formatted);
@@ -204,7 +205,7 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
                 mDatabase.child("categories").child(spinnerres).child(pid).child("city").setValue(city);
                 mDatabase.child("categories").child(spinnerres).child(pid).child("lat").setValue(lat);
                 mDatabase.child("categories").child(spinnerres).child(pid).child("long").setValue(lon);
-
+                mDatabase.child("categories").child(spinnerres).child(pid).child("toID").setValue(uid);
 
                 mDatabase.child("cityProducts").child(city).child(pid).child("city").setValue(city);
                 mDatabase.child("cityProducts").child(city).child(pid).child("lat").setValue(lat);

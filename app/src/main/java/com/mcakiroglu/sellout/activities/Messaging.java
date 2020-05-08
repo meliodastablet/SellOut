@@ -4,11 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -25,9 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mcakiroglu.sellout.R;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.mcakiroglu.sellout.models.Message;
 
 public class Messaging extends AppCompatActivity {
     LinearLayout linear;
@@ -59,21 +55,16 @@ public class Messaging extends AppCompatActivity {
 
                 if(!messageText.equals("")){
 
-                    DatabaseReference pid2 = ref.child(user.getUid()).push();
-                   String pid =pid2.getKey();
 
-                    ref.child(user.getUid()).child(toid).child(pid).child("fromID").setValue(user.getUid());
-                    ref.child(user.getUid()).child(toid).child(pid).child("message").setValue(messageText);
-                    ref.child(user.getUid()).child(toid).child(pid).child("timestamp").setValue("2020-05-05 11:38");
-                    ref.child(user.getUid()).child(toid).child(pid).child("toID").setValue(toid);
-                    ref.child(user.getUid()).child(toid).child(pid).child("read").setValue("0");
 
-                    ref.child(toid).child(user.getUid()).child(pid).child("fromID").setValue(user.getUid());
-                    ref.child(toid).child(user.getUid()).child(pid).child("message").setValue(messageText);
-                    ref.child(toid).child(user.getUid()).child(pid).child("timestamp").setValue("2020-05-05 11:38");
-                    ref.child(toid).child(user.getUid()).child(pid).child("toID").setValue(toid);
-                    ref.child(toid).child(user.getUid()).child(pid).child("read").setValue("0");
-                    addMessageBox(messageText, 1);
+                    Message m = new Message(user.getUid(),messageText,"2020-05-05 11:38",toid,"0");
+
+                    ref.child(user.getUid()).child(toid).push().setValue(m);
+                    ref.child(toid).child(user.getUid()).push().setValue(m);
+
+
+
+
                     messageArea.setText("");
 
                 }
@@ -81,27 +72,27 @@ public class Messaging extends AppCompatActivity {
             }
         });
 
-        ref.child(user.getUid()).addChildEventListener(new ChildEventListener() {
+        ref.child(user.getUid()).child(toid).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String s) {
 
-                Iterable<DataSnapshot> iterable =dataSnapshot.getChildren();
-                for(DataSnapshot snap :iterable){
-                    System.out.println("snap" + snap);
-                    String message = snap.child("message").getValue().toString();
-                    String from = snap.child("fromID").getValue().toString();
+                //Iterable<DataSnapshot> iterable =dataSnapshot.getChildren();
+             //   for(DataSnapshot snap :data){
+                    System.out.println("snap" + dataSnapshot);
+                    String message = dataSnapshot.child("message").getValue().toString();
+                    String from = dataSnapshot.child("fromID").getValue().toString();
                    // String to = snap.child("toID").getValue().toString();
                     //.out.println(to + "lNWT" + toid);
                     if(user.getUid().equals(from)){
                         addMessageBox(message, 1);
                     }
-                    else if(toid.equals(from)){
+                    else{
                         addMessageBox(message, 2);
                     }
 
 
                 }
-            }
+           // }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -137,10 +128,12 @@ public class Messaging extends AppCompatActivity {
 
         if(type == 1) {
             lp2.gravity = Gravity.LEFT;
+            lp2.topMargin = 20;
             textView.setBackgroundResource(R.drawable.bubble_in);
         }
         else{
             lp2.gravity = Gravity.RIGHT;
+            lp2.topMargin = 20;
             textView.setBackgroundResource(R.drawable.bubble_out);
         }
         textView.setLayoutParams(lp2);

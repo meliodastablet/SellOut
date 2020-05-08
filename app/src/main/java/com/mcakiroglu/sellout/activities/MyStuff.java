@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.mcakiroglu.sellout.R;
 import com.mcakiroglu.sellout.adapter.MyStuffAdapter;
 import com.mcakiroglu.sellout.databinding.ActivityMyStuffBinding;
+import com.mcakiroglu.sellout.models.Property;
 
 import java.util.ArrayList;
 

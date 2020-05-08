@@ -1,4 +1,4 @@
-package com.mcakiroglu.sellout.activities;
+package com.mcakiroglu.sellout.models;
 
 import java.io.Serializable;
 
@@ -13,8 +13,9 @@ private String comment;
 private String counter;
 private String image1, image2, image3, image4;
 private String category;
+private String toID;
 
-    public Property(String adress, String name, String status, double price, String date, String comment, String counter, String i, String i2, String i3, String i4, String category) {
+    public Property(String adress, String name, String status, double price, String date, String comment, String counter, String i, String i2, String i3, String i4, String category,String id) {
         this.adress = adress;
         this.name = name;
         this.status = status;
@@ -27,6 +28,7 @@ private String category;
         this.image3 = i3;
         this.image4 = i4;
         this.category=category;
+        this.toID = id;
     }
 
     public Property() {
@@ -128,13 +130,21 @@ private String category;
         this.image4 = image4;
     }
 
+    public String getToID() {
+        return toID;
+    }
+
+    public void setToID(String toID) {
+        this.toID = toID;
+    }
+
     @Override
     public String toString() {
         return "Property{" +
                 "adress='" + adress + '\'' +
                 ", name='" + name + '\'' +
                 ", status='" + status + '\'' +
-                ", price='" + price + '\'' +
+                ", price=" + price +
                 ", date='" + date + '\'' +
                 ", comment='" + comment + '\'' +
                 ", counter='" + counter + '\'' +
@@ -143,6 +153,7 @@ private String category;
                 ", image3='" + image3 + '\'' +
                 ", image4='" + image4 + '\'' +
                 ", category='" + category + '\'' +
+                ", id='" + toID + '\'' +
                 '}';
     }
 }

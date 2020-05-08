@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mcakiroglu.sellout.R;
 import com.mcakiroglu.sellout.databinding.ActivityDisplayStuffBinding;
+import com.mcakiroglu.sellout.models.Property;
 
 import java.util.ArrayList;
 
@@ -19,6 +22,8 @@ public class DisplayStuff extends AppCompatActivity implements View.OnClickListe
     Property prop;
     int k = 0;
     private DatabaseReference mDatabase;
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseUser user = auth.getCurrentUser();
     ArrayList<String> a = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +67,8 @@ public class DisplayStuff extends AppCompatActivity implements View.OnClickListe
         }
 
 
+        if(user.getUid().equals(prop.getToID()))
+            binding.msend.setVisibility(View.INVISIBLE);
 
 
 
@@ -69,6 +76,7 @@ public class DisplayStuff extends AppCompatActivity implements View.OnClickListe
         binding.iptal.setOnClickListener(this);
         binding.msend.setOnClickListener(this);
         binding.markassold.setOnClickListener(this);
+
 
 
     }
@@ -112,6 +120,7 @@ public class DisplayStuff extends AppCompatActivity implements View.OnClickListe
 
         } else if(v.getId() == R.id.msend){
                 Intent intent = new Intent(this,Messaging.class);
+                intent.putExtra("toid",prop.getToID());
                 startActivity(intent);
         }else if(v.getId() == R.id.markassold){
             //mDatabase.child("usersProducts").child(uid).child(pid).child("comment").setValue(binding.desc.getText().toString());

@@ -10,8 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textColorHint="@color/colorPrimary"
-        android:textColor="#000000"
+        android:textColorHint="@color/beyaz"
+        android:textColor="@color/beyaz"
+
         android:hint="Write a message"
         android:id="@+id/messageArea"
         android:maxHeight="80dp"
@@ -22,6 +23,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="4"
         android:padding="4dp"
-        android:src="@android:drawable/ic_menu_send"
+        android:src="@mipmap/send"
         android:id="@+id/sendButton"/>
 </LinearLayout>
