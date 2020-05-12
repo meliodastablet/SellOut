@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -204,6 +205,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
                 }
             });
         }else if(v.getId() == R.id.logout){
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(auth.getUid());
             auth.signOut();
             Toast.makeText(this,"Başarıyla çıkış yapıldı.",Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this,Login.class);

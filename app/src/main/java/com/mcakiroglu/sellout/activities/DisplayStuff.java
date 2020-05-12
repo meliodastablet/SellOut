@@ -35,7 +35,7 @@ public class DisplayStuff extends AppCompatActivity implements View.OnClickListe
 
         Intent intent = getIntent();
         prop = (Property)intent.getSerializableExtra("prop");
-
+        System.out.println("godzilla"+ prop.toString());
         binding.urunadi.setText("Ürün İsmi: " + prop.getName());
         binding.ilantarihi.setText("İlan Tarihi: " +prop.getDate());
         binding.urunsahibi.setText("Ürün Sahibi: Selam");

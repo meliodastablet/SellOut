@@ -14,6 +14,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.Response.Listener;
+import com.android.volley.Response.ErrorListener;
+
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,6 +34,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.mcakiroglu.sellout.R;
 import com.mcakiroglu.sellout.models.Message;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Messaging extends AppCompatActivity {
     LinearLayout linear;
     ScrollView scrollView;
@@ -34,6 +51,11 @@ public class Messaging extends AppCompatActivity {
     FirebaseUser user = auth.getCurrentUser();
     ImageView send;
     String toid;
+    EditText text;
+
+    final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
+    final private String serverKey = "key=" + "AAAALJdeEzo:APA91bGOfkE8j5N_gt3puouWw8ALsq0PFcMAO_6SVQWq1bCfbviNpvr8MWkzEZDDQIcg_NDIePepIvNd2iVq3iHD5qpRFy2VyN6UiIIYEr94ufPV8RU8j57QpZ3YPpMv0GU_FyIjPD6m";
+    final private String contentType = "application/json";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +69,8 @@ public class Messaging extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         ref = database.getReference("messages");
         send = findViewById(R.id.sendButton);
+        text = findViewById(R.id.messageArea);
+
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,14 +78,16 @@ public class Messaging extends AppCompatActivity {
                 String messageText = messageArea.getText().toString();
 
                 if(!messageText.equals("")){
+                    Date now = new Date();
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm z");
+                    String date = sdf.format(now);
 
-
-
-                    Message m = new Message(user.getUid(),messageText,"2020-05-05 11:38",toid,"0");
+                    Message m = new Message(user.getUid(),messageText,date,toid,"0");
 
                     ref.child(user.getUid()).child(toid).push().setValue(m);
                     ref.child(toid).child(user.getUid()).push().setValue(m);
 
+                    notification(toid,"Yeni mesaj!",messageText,"message");
 
 
 
@@ -81,13 +107,18 @@ public class Messaging extends AppCompatActivity {
                     System.out.println("snap" + dataSnapshot);
                     String message = dataSnapshot.child("message").getValue().toString();
                     String from = dataSnapshot.child("fromID").getValue().toString();
+                    String time = dataSnapshot.child("timestamp").getValue().toString();
+                    String read = "✓";
+
                    // String to = snap.child("toID").getValue().toString();
                     //.out.println(to + "lNWT" + toid);
                     if(user.getUid().equals(from)){
                         addMessageBox(message, 1);
+                        addMessageBox(time + " " + read,3);
                     }
                     else{
                         addMessageBox(message, 2);
+                        addMessageBox(time + " " + read,4);
                     }
 
 
@@ -131,10 +162,22 @@ public class Messaging extends AppCompatActivity {
             lp2.topMargin = 20;
             textView.setBackgroundResource(R.drawable.bubble_in);
         }
-        else{
+        else if(type == 2){
             lp2.gravity = Gravity.RIGHT;
             lp2.topMargin = 20;
             textView.setBackgroundResource(R.drawable.bubble_out);
+        }else if(type == 3){
+            lp2.gravity = Gravity.LEFT;
+            lp2.topMargin = 5;
+            textView.setTextSize(15);
+            textView.setBackgroundResource(R.drawable.bubble);
+        }
+        else{
+            lp2.gravity = Gravity.RIGHT;
+            lp2.topMargin = 5;
+            textView.setTextSize(15);
+            textView.setBackgroundResource(R.drawable.bubble);
+
         }
         textView.setLayoutParams(lp2);
         linear.addView(textView);
@@ -143,6 +186,62 @@ public class Messaging extends AppCompatActivity {
     }
     public void onBackPressed(){
         startActivity(new Intent(Messaging.this,Messages.class));
+    }
+
+    public void notification(String uid,String NOTIFICATION_TITLE, String NOTIFICATION_MESSAGE, String type){
+
+
+        String TOPIC = "/topics/" + uid ;
+
+
+        JSONObject notification = new JSONObject();
+        JSONObject notifcationBody = new JSONObject();
+
+        try {
+
+            notifcationBody.put("type", type);
+            notifcationBody.put("title", NOTIFICATION_TITLE);
+            notifcationBody.put("message", NOTIFICATION_MESSAGE);
+            notifcationBody.put("id", user.getUid());
+
+            notification.put("to", TOPIC);
+            notification.put("data", notifcationBody);
+
+        } catch (JSONException e) {
+
+        }
+
+        sendNotification(notification);
+    }
+
+    private void sendNotification(JSONObject notification) {
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(FCM_API, notification,
+                new com.android.volley.Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("onResponse: " + response.toString());
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        Toast.makeText(Messaging.this, "Request error", Toast.LENGTH_LONG).show();
+
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("Authorization", serverKey);
+                params.put("Content-Type", contentType);
+                return params;
+            }
+        };
+        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
     }
 
 

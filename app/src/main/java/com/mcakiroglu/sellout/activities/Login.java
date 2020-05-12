@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.mcakiroglu.sellout.R;
 import com.mcakiroglu.sellout.databinding.ActivityMainBinding;
 
@@ -101,7 +102,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
 
-
+                            FirebaseMessaging.getInstance().subscribeToTopic(mAuth.getUid());
                             Toast.makeText(Login.this,
                                     "Giriş başarılı.",
                                     Toast.LENGTH_SHORT).show();

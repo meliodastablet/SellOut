@@ -15,7 +15,7 @@ private String image1, image2, image3, image4;
 private String category;
 private String toID;
 
-    public Property(String adress, String name, String status, double price, String date, String comment, String counter, String i, String i2, String i3, String i4, String category,String id) {
+    public Property(String adress, String name, String status, double price, String date, String comment, String counter, String i, String i2, String i3, String i4, String category,String toID) {
         this.adress = adress;
         this.name = name;
         this.status = status;
@@ -28,7 +28,7 @@ private String toID;
         this.image3 = i3;
         this.image4 = i4;
         this.category=category;
-        this.toID = id;
+        this.toID = toID;
     }
 
     public Property() {

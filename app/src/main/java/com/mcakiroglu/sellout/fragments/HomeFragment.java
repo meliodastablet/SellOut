@@ -85,7 +85,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                DataSnapshot prop = dataSnapshot.child("usersProducts").child(uid);
+                DataSnapshot prop = dataSnapshot.child("categories").child("Elektronik");
                 Iterable<DataSnapshot> propdetails =prop.getChildren();
                 for(DataSnapshot snap :propdetails){
 
