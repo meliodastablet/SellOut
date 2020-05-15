@@ -39,7 +39,7 @@
         android:textSize="30dp"
         android:text="@string/nav_header_subtitle" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/cpass"
         android:layout_width="203dp"
         android:layout_marginTop="30dp"
@@ -47,28 +47,28 @@
         android:drawableLeft="@mipmap/lock"
         android:text="Parola değiştir" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/cname"
         android:layout_width="203dp"
         android:layout_height="wrap_content"
         android:drawableLeft="@mipmap/account"
         android:text="Kullanıcı adı değiştir" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/cadres"
         android:layout_width="203dp"
         android:drawableLeft="@mipmap/email"
         android:layout_height="wrap_content"
         android:text="Eposta Adresi Değiştir" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/vemail"
         android:layout_width="203dp"
         android:drawableLeft="@mipmap/verify"
         android:layout_height="wrap_content"
         android:text="Mail Doğrulama" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/daccount"
         android:layout_width="203dp"
         android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
         android:textColor="#ff0000"
         android:text="Hesabımı Sil" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/logout"
         android:layout_width="203dp"
         android:layout_height="wrap_content"

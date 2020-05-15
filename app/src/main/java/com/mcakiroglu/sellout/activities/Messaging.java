@@ -31,6 +31,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mcakiroglu.sellout.R;
 import com.mcakiroglu.sellout.models.Message;
 
@@ -38,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,6 +54,7 @@ public class Messaging extends AppCompatActivity {
     ImageView send;
     String toid;
     EditText text;
+    ArrayList<String> readid = new ArrayList<>();
 
     final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
     final private String serverKey = "key=" + "AAAALJdeEzo:APA91bGOfkE8j5N_gt3puouWw8ALsq0PFcMAO_6SVQWq1bCfbviNpvr8MWkzEZDDQIcg_NDIePepIvNd2iVq3iHD5qpRFy2VyN6UiIIYEr94ufPV8RU8j57QpZ3YPpMv0GU_FyIjPD6m";
@@ -82,7 +85,7 @@ public class Messaging extends AppCompatActivity {
                     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm z");
                     String date = sdf.format(now);
 
-                    Message m = new Message(user.getUid(),messageText,date,toid,"0");
+                    Message m = new Message(user.getUid(),messageText,date,"0",toid);
 
                     ref.child(user.getUid()).child(toid).push().setValue(m);
                     ref.child(toid).child(user.getUid()).push().setValue(m);
@@ -108,17 +111,27 @@ public class Messaging extends AppCompatActivity {
                     String message = dataSnapshot.child("message").getValue().toString();
                     String from = dataSnapshot.child("fromID").getValue().toString();
                     String time = dataSnapshot.child("timestamp").getValue().toString();
-                    String read = "✓";
+                    String r = dataSnapshot.child("read").getValue().toString();
+                    String read;
+                    if(from.equals(user.getUid())){
+
+                    }else{
+                        readid.add(dataSnapshot.getKey());
+
+                    }
+
+
+
 
                    // String to = snap.child("toID").getValue().toString();
                     //.out.println(to + "lNWT" + toid);
                     if(user.getUid().equals(from)){
                         addMessageBox(message, 1);
-                        addMessageBox(time + " " + read,3);
+                        addMessageBox(time + " ",3);
                     }
                     else{
                         addMessageBox(message, 2);
-                        addMessageBox(time + " " + read,4);
+                        addMessageBox(time + " ",4);
                     }
 
 
@@ -185,6 +198,12 @@ public class Messaging extends AppCompatActivity {
 
     }
     public void onBackPressed(){
+
+for(int i=0;i<readid.size();i++){
+    ref.child(user.getUid()).child(toid).child(readid.get(i)).child("read").setValue("1");
+
+
+}
         startActivity(new Intent(Messaging.this,Messages.class));
     }
 

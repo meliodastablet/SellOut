@@ -37,13 +37,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         String type = remoteMessage.getData().get("type");
         final Intent intent;
+try{
+    if(type.equalsIgnoreCase("message")) {
+        intent = new Intent(this, Messaging.class);
+        intent.putExtra("toid",remoteMessage.getData().get("id"));
+    }else{
+        intent = new Intent(this, Message.class);
+    }
+}catch (Exception e){
+return;
+}
 
-        if(type.equalsIgnoreCase("message")) {
-            intent = new Intent(this, Messaging.class);
-            intent.putExtra("toid",remoteMessage.getData().get("id"));
-        }else{
-             intent = new Intent(this, Message.class);
-        }
 
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         int notificationID = new Random().nextInt(3000);

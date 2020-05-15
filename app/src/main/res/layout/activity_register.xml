@@ -61,7 +61,7 @@
         android:textColor="#FFF"
         android:textColorHint="#999" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

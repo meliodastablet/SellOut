@@ -131,7 +131,7 @@
                 android:textColorHint="@color/beyaz"
                 android:hint="Adres" />
 
-            <Button
+            <android.widget.Button
                 android:id="@+id/address"
                 android:background="@drawable/selector_xml_btn_yellow"
                 android:layout_width="wrap_content"
@@ -152,7 +152,7 @@
                 android:textColor="@color/beyaz"
                 android:layout_marginTop="30dp" />
 
-            <Button
+            <android.widget.Button
                 android:id="@+id/save"
                 android:layout_width="wrap_content"
                 android:background="@drawable/selector_xml_btn_yellow"
