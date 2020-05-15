@@ -37,6 +37,7 @@ public class Messages extends AppCompatActivity {
     ArrayList<String> ids = new ArrayList<>();
     ArrayList<String> names = new ArrayList<>();
 
+
     ListView uList;
 
     @Override
@@ -88,6 +89,9 @@ ref.child(user.getUid()).addValueEventListener(new ValueEventListener() {
         System.out.println(dataSnapshot.toString());
         Iterable<DataSnapshot> iterable =dataSnapshot.getChildren();
         for(DataSnapshot snap :iterable) {
+
+
+
             ids.add(snap.getKey());
             ref2.child(snap.getKey()).addValueEventListener(new ValueEventListener() {
                 @Override
@@ -111,6 +115,7 @@ ref.child(user.getUid()).addValueEventListener(new ValueEventListener() {
 
         ArrayAdapter adapter;
         adapter= new ArrayAdapter<String>(Messages.this,R.layout.simple_list_item_1,names);
+
         uList.setAdapter(adapter);
         uList.setVisibility(View.VISIBLE);
 
