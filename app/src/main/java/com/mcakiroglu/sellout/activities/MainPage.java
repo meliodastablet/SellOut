@@ -80,7 +80,7 @@ public class MainPage extends AppCompatActivity{
                                 ref.child(user.getUid()).child(snap11.getKey()).child(snap2.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        System.out.println("WTFgo"+dataSnapshot.toString());
+
                                         if(!(dataSnapshot.child("fromID").getValue().toString().equals(user.getUid()))&&(dataSnapshot.child("read").getValue().toString().equals("0")))
                                             unread++;
                                         bnw.getOrCreateBadge(R.id.messages).setNumber(unread);

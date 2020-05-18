@@ -42,10 +42,10 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
 
-                                Toast.makeText(ForgotPassword.this, "Parola sıfırlama email'i gönderildi",
+                                Toast.makeText(ForgotPassword.this, R.string.scp,
                                         Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(ForgotPassword.this, "Bilinmeyen hata",
+                                Toast.makeText(ForgotPassword.this, R.string.uner,
                                         Toast.LENGTH_SHORT).show();
                             }
                         }

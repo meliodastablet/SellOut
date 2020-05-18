@@ -109,7 +109,7 @@ public class ArabaFragment extends Fragment implements View.OnClickListener {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         if(a.isEmpty() && active){
-            Toast.makeText(getContext(), "Ürün bulunamadı", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.notfound, Toast.LENGTH_SHORT).show();
         }
 
         Collections.reverse(a);

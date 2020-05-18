@@ -86,7 +86,7 @@ public class Messages extends AppCompatActivity {
 ref.child(user.getUid()).addValueEventListener(new ValueEventListener() {
     @Override
     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        System.out.println(dataSnapshot.toString());
+
         Iterable<DataSnapshot> iterable =dataSnapshot.getChildren();
         for(DataSnapshot snap :iterable) {
 
@@ -111,7 +111,7 @@ ref.child(user.getUid()).addValueEventListener(new ValueEventListener() {
         }
 
 
-        System.out.println("FC" + ids.toString());
+
 
         ArrayAdapter adapter;
         adapter= new ArrayAdapter<String>(Messages.this,R.layout.simple_list_item_1,names);

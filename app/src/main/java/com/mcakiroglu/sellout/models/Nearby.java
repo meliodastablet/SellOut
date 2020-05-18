@@ -1,4 +1,4 @@
-package com.mcakiroglu.sellout.activities;
+package com.mcakiroglu.sellout.models;
 
 import java.io.Serializable;
 

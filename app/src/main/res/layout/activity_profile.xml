@@ -45,44 +45,35 @@
         android:layout_marginTop="30dp"
         android:layout_height="wrap_content"
         android:drawableLeft="@mipmap/lock"
-        android:text="Parola değiştir" />
+        android:text="@string/cpass" />
 
     <android.widget.Button
         android:id="@+id/cname"
         android:layout_width="203dp"
         android:layout_height="wrap_content"
         android:drawableLeft="@mipmap/account"
-        android:text="Kullanıcı adı değiştir" />
+        android:text="@string/cuname" />
 
     <android.widget.Button
         android:id="@+id/cadres"
         android:layout_width="203dp"
         android:drawableLeft="@mipmap/email"
         android:layout_height="wrap_content"
-        android:text="Eposta Adresi Değiştir" />
+        android:text="@string/cemail" />
 
     <android.widget.Button
         android:id="@+id/vemail"
         android:layout_width="203dp"
         android:drawableLeft="@mipmap/verify"
         android:layout_height="wrap_content"
-        android:text="Mail Doğrulama" />
-
-    <android.widget.Button
-        android:id="@+id/daccount"
-        android:layout_width="203dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:drawableLeft="@mipmap/delete"
-        android:textColor="#ff0000"
-        android:text="Hesabımı Sil" />
+        android:text="@string/confirmemail" />
 
     <android.widget.Button
         android:id="@+id/logout"
         android:layout_width="203dp"
         android:layout_height="wrap_content"
         android:drawableLeft="@mipmap/logout"
-        android:text="Çıkış Yap" />
+        android:text="@string/logout" />
     <TableLayout
         android:gravity="bottom"
         android:layout_width="match_parent"

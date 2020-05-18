@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
-import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
@@ -24,14 +23,13 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mcakiroglu.sellout.R;
+import com.mcakiroglu.sellout.models.Nearby;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -103,7 +101,7 @@ public class ShowOnMap extends AppCompatActivity implements OnMapReadyCallback {
 
             }
         };
-
+        //self note: add exception for current location getter code thingy
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
 
         locationx = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -119,9 +117,9 @@ public class ShowOnMap extends AppCompatActivity implements OnMapReadyCallback {
                 Address address = list.get(0);
                 city = address.getAdminArea();
             } catch (IOException e) {
-                System.out.println("Rror");
+
                 Intent intent = new Intent(this,MainPage.class);
-                Toast.makeText(this,"Harita kullanılamıyor",Toast.LENGTH_SHORT);
+                Toast.makeText(this, R.string.mapnono,Toast.LENGTH_SHORT);
                 startActivity(intent);
 
             }

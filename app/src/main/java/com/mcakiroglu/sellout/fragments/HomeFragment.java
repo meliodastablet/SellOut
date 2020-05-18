@@ -172,11 +172,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                     location();
-                    System.out.println("yay");
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
-                    Toast.makeText(getContext(),"Lütfen konum erişimine izin verin",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.allowloc,Toast.LENGTH_SHORT).show();
                 }
                 return;
             }

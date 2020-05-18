@@ -68,7 +68,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:background="@drawable/selector_xml_btn_yellow"
-        android:text="Kayıt Ol" />
+        android:text="@string/reg" />
 
     <TextView
         android:id="@+id/textView2"
@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:text="Hesabın var mı? Giriş yap."
+        android:text="@string/acclog"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFF" />
 

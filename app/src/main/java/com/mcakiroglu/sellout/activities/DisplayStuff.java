@@ -35,7 +35,7 @@ public class DisplayStuff extends AppCompatActivity implements View.OnClickListe
 
         Intent intent = getIntent();
         prop = (Property)intent.getSerializableExtra("prop");
-        System.out.println("godzilla"+ prop.toString());
+
         binding.urunadi.setText("Ürün İsmi: " + prop.getName());
         binding.ilantarihi.setText("İlan Tarihi: " +prop.getDate());
         binding.urunsahibi.setText("Ürün Sahibi: Selam");
@@ -87,12 +87,12 @@ public class DisplayStuff extends AppCompatActivity implements View.OnClickListe
         if(v.getId() == R.id.nexti){
             k++;
             if(k == 1) {
-                System.out.println("11111" + k);
+
                 Glide.with(this).load(a.get(k)).into(binding.imageView6);
 
             }else if(k==2) {
                 try{
-                    System.out.println("222222" + k);
+
                     Glide.with(this).load(a.get(k)).into(binding.imageView6);
                 }catch (Exception e){
                     k = 0;
@@ -101,7 +101,6 @@ public class DisplayStuff extends AppCompatActivity implements View.OnClickListe
 
             }else if(k==3) {
                 try{
-                    System.out.println("333333" + k);
                     Glide.with(this).load(a.get(k)).into(binding.imageView6);
                 }catch (Exception e){
                     k = 0;
@@ -109,14 +108,13 @@ public class DisplayStuff extends AppCompatActivity implements View.OnClickListe
 
             }else{
                 k=0;
-                System.out.println("4444444");
                 Glide.with(this).load(a.get(1)).into(binding.imageView6);
             }
 
 
 
         }else if(v.getId() == R.id.iptal){
-           //mDatabase.child("usersProducts").child(uid).child(pid).child("status").setValue(binding.desc.getText().toString());
+          // mDatabase.child("usersProducts").child(user.getUid()).child(pid).child("status").setValue(binding.aciklama.getText().toString());
 
         } else if(v.getId() == R.id.msend){
                 Intent intent = new Intent(this,Messaging.class);

@@ -107,7 +107,7 @@ public class Messaging extends AppCompatActivity {
 
                 //Iterable<DataSnapshot> iterable =dataSnapshot.getChildren();
              //   for(DataSnapshot snap :data){
-                    System.out.println("snap" + dataSnapshot);
+
                     String message = dataSnapshot.child("message").getValue().toString();
                     String from = dataSnapshot.child("fromID").getValue().toString();
                     String time = dataSnapshot.child("timestamp").getValue().toString();

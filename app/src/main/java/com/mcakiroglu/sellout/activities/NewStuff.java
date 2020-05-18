@@ -157,12 +157,12 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
                 flag = false;
             }
             if (spinnerres.equals("Kategori Seçiniz")) {
-                Toast.makeText(this, "Kategori seçiniz", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.ccat, Toast.LENGTH_SHORT).show();
                 flag = false;
             }
             //if resim
             if (filePath2 == null && filePath3 == null && filePath4 == null && filePath5 == null) {
-                Toast.makeText(this, "Resim seçiniz", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.cpppp, Toast.LENGTH_SHORT).show();
             } else {
                 if (filePath2 != null)
                     filePathr.add(filePath2);
@@ -176,6 +176,8 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
             }
 
             if (flag && flag2) {
+                //self note : push using the model
+
                 propid = mDatabase.child("usersProducts").child(uid).push();
                 pid =propid.getKey();
                 mDatabase.child("usersProducts").child(uid).child(pid).child("name").setValue(binding.pname.getText().toString());
@@ -300,7 +302,7 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
                 binding.address2.setText(result);
                 lat = data.getDoubleExtra("lat",0);
                 lon = data.getDoubleExtra("lon",0);
-                System.out.println("aaa" +result + city + lat + lon);
+
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //no result
@@ -323,7 +325,7 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
 
                final StorageReference ref = storageRef.child("/usersMedia/" + uid + "/" + pid + "/" + i);
 
-                System.out.println("FILEPATH" + filePathr.get(i));
+
                 ref.putFile(filePathr.get(i))
                         .addOnSuccessListener(
                                 new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -401,7 +403,7 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
                                     mDatabase.child("usersProducts").child(uid).child(pid).child("image4").setValue(urli);
                                     mDatabase.child("categories").child(spinnerres).child(pid).child("image4").setValue(urli);
                                 }
-                                System.out.println("kkkk" +kk);
+
                                 kk++;
                             }
                         });
@@ -427,11 +429,11 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                     location();
-                    System.out.println("yay");
+
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
-                   Toast.makeText(this,"Lütfen konum erişimine izin verin",Toast.LENGTH_SHORT).show();
+                   Toast.makeText(this, R.string.allowloc,Toast.LENGTH_SHORT).show();
                 }
                 return;
             }

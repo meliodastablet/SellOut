@@ -118,7 +118,7 @@ public class MyStuff extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         if(a.isEmpty() && active){
-            Toast.makeText(MyStuff.this, "This user has no properties.",
+            Toast.makeText(MyStuff.this, R.string.noprop,
                     Toast.LENGTH_SHORT).show();
         }
         MyStuffAdapter adapter = new MyStuffAdapter(this,a);

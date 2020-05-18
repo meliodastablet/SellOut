@@ -17,6 +17,45 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="addimage">Lütfen en az 1 resim ekleyiniz.</string>
+    <string name="choosefrommap">Haritadan Seç</string>
+    <string name="cpass">Parola değiştir</string>
+    <string name="cuname">Kullanıcı adı değiştir</string>
+    <string name="cemail">Eposta Adresi Değiştir</string>
+    <string name="confirmemail">Mail Doğrulama</string>
+    <string name="logout">Çıkış Yap</string>
+    <string name="save">Kaydet</string>
+    <string name="sort">Sırala</string>
+    <string name="forgotpass">Parolamı Unuttum</string>
+    <string name="listnearby">Çevredeki Ürünleri Listele</string>
+    <string name="login">GİRİŞ</string>
+    <string name="forgotpassw">Parolamı Unuttum.</string>
+    <string name="register">Hesabın yok mu? Kayıt ol.</string>
+    <string name="reg">Kayıt Ol</string>
+    <string name="acclog">Hesabın var mı? Giriş yap.</string>
+    <string name="nextimg">Sıradaki Resim</string>
+    <string name="sendmsg">Mesaj Gönder</string>
+    <string name="markas">Satıldı olarak işaretle</string>
+    <string name="cancel">İptal et</string>
+    <string name="done">TAMAMLANDI</string>
+    <string name="sat">Uydu</string>
+    <string name="vmailsent">Doğrulama maili gönderildi.</string>
+    <string name="succext">Başarıyla çıkış yapıldı.</string>
+    <string name="cepad">Eposta adresiniz değişti.</string>
+    <string name="cnn">Kullanıcı adınız değişti.</string>
+    <string name="cpasss">Parola değiştirildi</string>
+    <string name="cpp">Profil resminiz değişti</string>
+    <string name="ccat">Kategori seçiniz</string>
+    <string name="cpppp">Resim seçiniz</string>
+    <string name="allowloc">Lütfen konum erişimine izin verin</string>
+    <string name="scp">Parola sıfırlama email\'i gönderildi</string>
+    <string name="uner">Bilinmeyen hata</string>
+    <string name="noprop">This user has no properties.</string>
+    <string name="notfound">Ürün bulunamadı</string>
+    <string name="loginerr">Giriş başarısız oldu, yanlış e-posta ya da parola.</string>
+    <string name="chooseloc">Bir konum seçin</string>
+    <string name="succreg">Hesap oluşturma başarılı, artık giriş yapabilirsiniz.</string>
+    <string name="mapnono">Harita kullanılamıyor</string>
 
 
 </resources>

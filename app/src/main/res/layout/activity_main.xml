@@ -40,7 +40,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
         android:background="@drawable/selector_xml_btn_yellow"
-        android:text="Giriş" />
+        android:text="@string/login" />
 
     <TextView
         android:id="@+id/textView3"
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:text="Parolamı Unuttum."
+        android:text="@string/forgotpassw"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFF" />
 
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
-        android:text="Hesabın yok mu? Kayıt ol."
+        android:text="@string/register"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFF" />
 

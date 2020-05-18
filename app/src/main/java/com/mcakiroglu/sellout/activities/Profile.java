@@ -175,7 +175,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
-                        Toast.makeText(Profile.this,"Doğrulama maili gönderildi.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Profile.this, R.string.vmailsent,Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -194,20 +194,11 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
 
 
 
-        }else if(v.getId() == R.id.daccount){
-            user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if(task.isSuccessful()){
-                        Toast.makeText(Profile.this, "Hesabınız silindi.", Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(Profile.this,Login.class);
-                    }
-                }
-            });
+
         }else if(v.getId() == R.id.logout){
             FirebaseMessaging.getInstance().unsubscribeFromTopic(auth.getUid());
             auth.signOut();
-            Toast.makeText(this,"Başarıyla çıkış yapıldı.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.succext,Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this,Login.class);
             startActivity(intent);
         }
@@ -229,14 +220,13 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
     private void custom(int b) {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         mDatabase = database.getReference("users");
-        System.out.println("girdi mi" + m_Text);
         switch (b) {
             case 1:
                 user.updateEmail(m_Text).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(Profile.this, "Eposta adresiniz değişti.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Profile.this, R.string.cepad, Toast.LENGTH_SHORT).show();
                             mDatabase.child(user.getUid()).child("email").setValue(m_Text);
 
                         }
@@ -250,8 +240,8 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(Profile.this, "Kullanıcı adınız değişti.", Toast.LENGTH_SHORT).show();
-                            System.out.println("YOS" + user.getUid());
+                            Toast.makeText(Profile.this, R.string.cnn, Toast.LENGTH_SHORT).show();
+
 
                             mDatabase.child(user.getUid()).child("username").setValue(m_Text);
                             database.getReference("usernames").child(mt).removeValue();
@@ -266,7 +256,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful())
-                            Toast.makeText(Profile.this, "Parola değiştirildi", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Profile.this, R.string.cpasss, Toast.LENGTH_SHORT).show();
                     }
                 });
                 break;
@@ -295,7 +285,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
-                                        Toast.makeText(Profile.this,"Profil resminiz değişti",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Profile.this, R.string.cpp,Toast.LENGTH_SHORT).show();
 
                                     }
                                 }

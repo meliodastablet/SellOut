@@ -45,9 +45,7 @@ public class MyLocation extends FragmentActivity implements GoogleMap.OnMyLocati
 
     @Override
     public boolean onMyLocationButtonClick() {
-        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-        // Return false so that we don't consume the event and the default behavior still occurs
-        // (the camera animates to the user's current position).
+
         return false;
     }
 
@@ -82,7 +80,7 @@ public class MyLocation extends FragmentActivity implements GoogleMap.OnMyLocati
             @Override
             public void onClick(View v) {
                 if(coor == null){
-                    Toast.makeText(MyLocation.this, "Bir konum seçin" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyLocation.this, R.string.chooseloc , Toast.LENGTH_SHORT).show();
                 }
                 else{
                     Intent returnIntent = new Intent();
@@ -115,7 +113,7 @@ public class MyLocation extends FragmentActivity implements GoogleMap.OnMyLocati
                         s = address.getAddressLine(0);
                         city = address.getAdminArea();
                     } catch (IOException e) {
-                        System.out.println("Rror");
+
                     }
                 }
 

@@ -118,7 +118,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         } else {
 
 
-                            Toast.makeText(Login.this, "Giriş başarısız oldu, yanlış e-posta ya da parola.",
+                            Toast.makeText(Login.this, R.string.loginerr,
                                     Toast.LENGTH_SHORT).show();
 
                         }

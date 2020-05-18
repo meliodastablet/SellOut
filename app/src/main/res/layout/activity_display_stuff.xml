@@ -25,7 +25,7 @@
             android:layout_width="200dp"
             android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:text="Sıradaki Resim"
+            android:text="@string/nextimg"
              />
 
         <TextView
@@ -71,7 +71,7 @@
             android:layout_gravity="center"
             android:layout_height="wrap_content"
             android:drawableLeft="@mipmap/email"
-            android:text="Mesaj Gönder" />
+            android:text="@string/sendmsg" />
 
         <android.widget.Button
             android:id="@+id/markassold"
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:drawableLeft="@mipmap/check"
 
-            android:text="Satıldı olarak işaretle" />
+            android:text="@string/markas" />
 
         <android.widget.Button
             android:id="@+id/iptal"
@@ -89,7 +89,7 @@
             android:layout_height="wrap_content"
             android:drawableLeft="@mipmap/cancel"
 
-            android:text="İptal et" />
+            android:text="@string/cancel" />
     </LinearLayout>
 
 </LinearLayout>

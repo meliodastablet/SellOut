@@ -87,21 +87,20 @@ boolean flag = false;
 
         String kadi2 = binding.kadi.getText().toString();
         final String name2 = kadi2;
-        System.out.println("STEP1");
 
         ref = FirebaseDatabase.getInstance().getReference().child("usernames");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                System.out.println("STEP2");
+
                 for(DataSnapshot data: dataSnapshot.getChildren()) {
                     if (data.getKey().equals(name2)) {
-                        System.out.println("STEP2.5V1");
+
                         flag = true;
                         binding.kadi.setError("Bu kullanıcı adı çoktan seçilmiş.");
-                        System.out.println(flag + "name2" + name2 + data.getKey());
+
                     } else {
-                        System.out.println("STEP2.5V2");
+
                         System.out.println(flag + "name2else" + name2 + data.getKey());
                     }
                 }
@@ -112,13 +111,13 @@ boolean flag = false;
 
             }
         });
-        System.out.println("STEP3");
+
 
         if (TextUtils.isEmpty(kadi2)) {
             binding.kadi.setError("Bu alanı doldurmak zorunludur.");
             valid = false;}
         else {
-            System.out.println("STEP4V2");
+
             binding.kadi.setError(null);
         }
 
@@ -192,7 +191,7 @@ boolean flag = false;
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                Toast.makeText(Register.this, "Hesap oluşturma başarılı, artık giriş yapabilirsiniz.",
+                                                Toast.makeText(Register.this, R.string.succreg,
                                                         Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(getApplicationContext(),Login.class);
                                                 startActivity(intent);
