@@ -7,12 +7,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mcakiroglu.sellout.R;
+import com.mcakiroglu.sellout.activities.MainPage;
 import com.mcakiroglu.sellout.models.Property;
 import com.mcakiroglu.sellout.activities.ShowOnMap;
 import com.mcakiroglu.sellout.adapter.MyStuffAdapter;
@@ -34,12 +38,15 @@ import java.util.ArrayList;
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
 
-    RecyclerView recyclerView;
+    RecyclerView rw1,rw2,rw3;
     FragmentHomeBinding binding;
     final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION=30;
 
     String uid;
-    public ArrayList<Property> pro =new ArrayList<>();
+    public ArrayList<ArrayList<Property>> pro =new ArrayList<>();
+    public ArrayList<Property> pro2 =new ArrayList<>();
+    public ArrayList<Property> pro3 =new ArrayList<>();
+    public ArrayList<Property> pro4 =new ArrayList<>();
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     static boolean active = false;
@@ -69,7 +76,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     protected void init() {
         binding.geol.setOnClickListener(this);
-        recyclerView = binding.recyclerView6;
+
+
+        rw1 = binding.recyclerView6;
+        rw2 = binding.recyclerView7;
+        rw3 = binding.recyclerView8;
         mAuth = FirebaseAuth.getInstance();
         final FirebaseUser user = mAuth.getCurrentUser();
         uid=user.getUid();
@@ -81,18 +92,37 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     protected void handlers() {
 
 
-
+//self note: .orderByChild().limitToFirst(3);
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 DataSnapshot prop = dataSnapshot.child("categories").child("Cep Telefonu");
+                DataSnapshot prop2 = dataSnapshot.child("categories").child("Elektronik");
+                DataSnapshot prop3 = dataSnapshot.child("categories").child("Araba");
                 Iterable<DataSnapshot> propdetails =prop.getChildren();
+                Iterable<DataSnapshot> propdetails2 =prop2.getChildren();
+                Iterable<DataSnapshot> propdetails3 =prop3.getChildren();
                 for(DataSnapshot snap :propdetails){
 
                     Property p =snap.getValue(Property.class);
-                    pro.add(p);
+                    p.setCategory("Cep Telefonu");
+                    pro2.add(p);
                 }
+                pro.add(pro2);
+                for(DataSnapshot snap :propdetails2){
 
+                    Property p =snap.getValue(Property.class);
+                    p.setCategory("Elektronik");
+                    pro3.add(p);
+                }
+                pro.add(pro3);
+                for(DataSnapshot snap :propdetails3){
+
+                    Property p =snap.getValue(Property.class);
+                    p.setCategory("Araba");
+                    pro4.add(p);
+                }
+                pro.add(pro4);
                 custom(pro);
 
 
@@ -110,17 +140,25 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    public void custom(ArrayList<Property> a){
+    public void custom(ArrayList<ArrayList<Property>> a){
 
 
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
+        LinearLayoutManager layoutManager3 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
+        rw1.setLayoutManager(layoutManager);
+        rw2.setLayoutManager(layoutManager2);
+        rw3.setLayoutManager(layoutManager3);
         if(a.isEmpty() && active){
 
         }
-        MyStuffAdapter adapter = new MyStuffAdapter(getContext(),a);
-        recyclerView.setAdapter(adapter);
+        MyStuffAdapter adapter = new MyStuffAdapter(getContext(),a.get(0));
+        MyStuffAdapter adapter2 = new MyStuffAdapter(getContext(),a.get(1));
+        MyStuffAdapter adapter3 = new MyStuffAdapter(getContext(),a.get(2));
+        rw1.setAdapter(adapter2);
+        rw2.setAdapter(adapter);
+        rw3.setAdapter(adapter3);
 
 
 
@@ -139,19 +177,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.geol){
+        if(v.getId() == R.id.geol) {
             if (ContextCompat.checkSelfPermission(getContext(),
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
 
 
-
-
-
                 requestPermissions(
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-
 
 
             } else {

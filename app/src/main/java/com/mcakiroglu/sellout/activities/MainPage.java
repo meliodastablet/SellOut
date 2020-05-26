@@ -1,6 +1,7 @@
 package com.mcakiroglu.sellout.activities;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -46,6 +47,8 @@ public class MainPage extends AppCompatActivity{
     DatabaseReference ref;
     int unread=0;
     FirebaseUser user;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +138,8 @@ public class MainPage extends AppCompatActivity{
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+
         bnw = (BottomNavigationView) findViewById(R.id.botnav);
         bnw.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

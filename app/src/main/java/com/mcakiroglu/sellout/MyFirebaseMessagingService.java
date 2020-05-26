@@ -1,4 +1,4 @@
-package com.mcakiroglu.sellout.activities;
+package com.mcakiroglu.sellout;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.mcakiroglu.sellout.R;
+import com.mcakiroglu.sellout.activities.Messaging;
 import com.mcakiroglu.sellout.models.Message;
 
 import java.util.Random;

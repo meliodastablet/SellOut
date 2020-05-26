@@ -1,4 +1,4 @@
-package com.mcakiroglu.sellout.activities;
+package com.mcakiroglu.sellout;
 import android.content.Context;
 
 import com.android.volley.Request;

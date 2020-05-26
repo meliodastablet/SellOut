@@ -10,6 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:background="@drawable/selector_xml_btn_yellow"
         android:layout_marginEnd="16dp"
         android:text="@string/sort"
         app:layout_constraintEnd_toEndOf="parent"
