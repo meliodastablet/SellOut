@@ -129,7 +129,7 @@
                 android:inputType="text"
                 android:textColor="@color/beyaz"
                 android:textColorHint="@color/beyaz"
-                android:hint="Adres" />
+                android:hint="Butona basarak adres seçiniz->" />
 
             <android.widget.Button
                 android:id="@+id/address"

@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,7 +20,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -35,9 +33,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mcakiroglu.sellout.R;
 import com.mcakiroglu.sellout.databinding.ActivityNewStuffBinding;
+import com.mcakiroglu.sellout.models.CityProducts;
+import com.mcakiroglu.sellout.models.UserProducts;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -62,7 +61,7 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
     boolean flag2 =false;
     int jk = 0;
     String uid,city;
-    double lat,lon;
+    double lat=99999,lon;
     private final int PICK_IMAGE_REQUEST = 99;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,13 +139,22 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
             chooseImage();
         }else if(v.getId() == R.id.save) {
             boolean flag = true;
+
             if (binding.pname.getText().toString().equals("")) {
                 binding.pname.setError("Bu alan zorunludur.");
                 flag = false;
             }
             if (binding.pricee.getText().toString().equals("")) {
-                binding.pname.setError("Bu alan zorunludur.");
+                binding.pricee.setError("Bu alan zorunludur.");
                 flag = false;
+            }else{
+                try {
+                    double d =Double.parseDouble(binding.pricee.getText().toString());
+                }catch (NumberFormatException e){
+                    binding.pricee.setError("Lütfen fiyatı rakam cinsinden giriniz.");
+                    flag = false;
+                }
+
             }
             if (binding.desc.getText().toString().equals("")) {
                 binding.desc.setError("Bu alan zorunludur.");
@@ -154,6 +162,10 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
             }
             if(binding.address2.getText().toString().equals("")){
                 binding.address2.setError("Bu alan zorunludur.");
+                flag = false;
+            }
+            if(lat == 99999){
+                binding.address2.setError("Lütfen butona tıklayarak adres seçiniz");
                 flag = false;
             }
             if (spinnerres.equals("Kategori Seçiniz")) {
@@ -176,44 +188,23 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
             }
 
             if (flag && flag2) {
-                //self note : push using the model
 
-                propid = mDatabase.child("usersProducts").child(uid).push();
-                pid =propid.getKey();
-                mDatabase.child("usersProducts").child(uid).child(pid).child("name").setValue(binding.pname.getText().toString());
-                mDatabase.child("usersProducts").child(uid).child(pid).child("comment").setValue(binding.desc.getText().toString());
-                mDatabase.child("usersProducts").child(uid).child(pid).child("price").setValue(Double.parseDouble(binding.pricee.getText().toString()));
                 SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                 String formatted = df.format(new Date());
-                mDatabase.child("usersProducts").child(uid).child(pid).child("date").setValue(formatted);
-
-                mDatabase.child("usersProducts").child(uid).child(pid).child("category").setValue(spinnerres);
-                mDatabase.child("usersProducts").child(uid).child(pid).child("status").setValue("0");
-                mDatabase.child("usersProducts").child(uid).child(pid).child("adress").setValue(result);
-                mDatabase.child("usersProducts").child(uid).child(pid).child("lat").setValue(lat);
-                mDatabase.child("usersProducts").child(uid).child(pid).child("long").setValue(lon);
-                mDatabase.child("usersProducts").child(uid).child(pid).child("city").setValue(city);
+                propid = mDatabase.child("usersProducts").child(uid).push();
+                pid =propid.getKey();
+                UserProducts up = new UserProducts(binding.pname.getText().toString(),binding.desc.getText().toString(),Double.parseDouble(binding.pricee.getText().toString()),formatted,spinnerres,"0",result,lat,lon,city,uid,null,null,null,null);
+                mDatabase.child("usersProducts").child(uid).child(pid).setValue(up);
 
 
 
 
+                UserProducts cat = new UserProducts(binding.pname.getText().toString(),binding.desc.getText().toString(),Double.parseDouble(binding.pricee.getText().toString()),formatted,spinnerres,"0",result,lat,lon,city,uid,null,null,null,null);
+                mDatabase.child("categories").child(spinnerres).child(pid).setValue(cat);
 
-                mDatabase.child("categories").child(spinnerres).child(pid).child("adress").setValue(result);
-                mDatabase.child("categories").child(spinnerres).child(pid).child("comment").setValue(binding.desc.getText().toString());
-                mDatabase.child("categories").child(spinnerres).child(pid).child("date").setValue(formatted);
-                mDatabase.child("categories").child(spinnerres).child(pid).child("name").setValue(binding.pname.getText().toString());
-                mDatabase.child("categories").child(spinnerres).child(pid).child("price").setValue(Double.parseDouble(binding.pricee.getText().toString()));
-                mDatabase.child("categories").child(spinnerres).child(pid).child("status").setValue("0");
-                mDatabase.child("categories").child(spinnerres).child(pid).child("city").setValue(city);
-                mDatabase.child("categories").child(spinnerres).child(pid).child("lat").setValue(lat);
-                mDatabase.child("categories").child(spinnerres).child(pid).child("long").setValue(lon);
-                mDatabase.child("categories").child(spinnerres).child(pid).child("toID").setValue(uid);
 
-                mDatabase.child("cityProducts").child(city).child(pid).child("city").setValue(city);
-                mDatabase.child("cityProducts").child(city).child(pid).child("lat").setValue(lat);
-                mDatabase.child("cityProducts").child(city).child(pid).child("lon").setValue(lon);
-                mDatabase.child("cityProducts").child(city).child(pid).child("name").setValue(binding.pname.getText().toString());
-                mDatabase.child("cityProducts").child(city).child(pid).child("price").setValue(Double.parseDouble(binding.pricee.getText().toString()));
+                CityProducts cp = new CityProducts(city,lat,lon,binding.pname.getText().toString(),binding.pricee.getText().toString(),null);
+                mDatabase.child("cityProducts").child(city).child(pid).setValue(cp);
 
 
 
@@ -223,7 +214,17 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
 
 
 
-                uploadImage();
+
+                try{
+                    uploadImage();
+                }catch (Exception e){
+
+                }finally {
+                    Intent i = new Intent(this,MainPage.class);
+                    Toast.makeText(this,"İlan yükleme başarılı.",Toast.LENGTH_SHORT);
+                    startActivity(i);
+                }
+
 
 
 
@@ -338,11 +339,7 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
 
 
                                         progressDialog.dismiss();
-                                        Toast
-                                                .makeText(NewStuff.this,
-                                                        "Image Uploaded!!",
-                                                        Toast.LENGTH_SHORT)
-                                                .show();
+
 
                                     }
                                 })
