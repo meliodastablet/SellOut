@@ -203,7 +203,7 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
                 mDatabase.child("categories").child(spinnerres).child(pid).setValue(cat);
 
 
-                CityProducts cp = new CityProducts(city,lat,lon,binding.pname.getText().toString(),binding.pricee.getText().toString(),null);
+                CityProducts cp = new CityProducts(city,lat,lon,binding.pname.getText().toString(),Double.parseDouble(binding.pricee.getText().toString()),null,uid,spinnerres);
                 mDatabase.child("cityProducts").child(city).child(pid).setValue(cp);
 
 
@@ -221,7 +221,7 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
 
                 }finally {
                     Intent i = new Intent(this,MainPage.class);
-                    Toast.makeText(this,"İlan yükleme başarılı.",Toast.LENGTH_SHORT);
+                    Toast.makeText(this,"İlan yükleme başarılı.",Toast.LENGTH_SHORT).show();
                     startActivity(i);
                 }
 

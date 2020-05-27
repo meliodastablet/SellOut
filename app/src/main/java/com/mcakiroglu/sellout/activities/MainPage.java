@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.mcakiroglu.sellout.R;
 import com.mcakiroglu.sellout.databinding.ActivityMainPageBinding;
 import com.mcakiroglu.sellout.databinding.NavHeaderMainPageBinding;
@@ -46,6 +47,7 @@ public class MainPage extends AppCompatActivity{
     private FirebaseAuth mAuth;
     DatabaseReference ref;
     int unread=0;
+    FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseUser user;
 
 
@@ -198,6 +200,20 @@ public class MainPage extends AppCompatActivity{
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(auth.getUid());
+                auth.signOut();
+                Toast.makeText(this, R.string.succext,Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this,Login.class);
+                startActivity(intent);
+                return true;
+        }
+        return false;
     }
 
 

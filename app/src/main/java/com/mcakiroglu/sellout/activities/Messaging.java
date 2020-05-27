@@ -73,6 +73,8 @@ public class Messaging extends AppCompatActivity {
         text = findViewById(R.id.messageArea);
 
 
+
+
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

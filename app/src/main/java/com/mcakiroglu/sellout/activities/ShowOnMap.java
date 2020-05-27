@@ -10,7 +10,9 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -102,7 +104,7 @@ public class ShowOnMap extends AppCompatActivity implements OnMapReadyCallback {
             }
         };
         //self note: add exception for current location getter code thingy
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,15,locationListener);
 
         locationx = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
@@ -116,15 +118,20 @@ public class ShowOnMap extends AppCompatActivity implements OnMapReadyCallback {
                 List<Address> list =geocoder.getFromLocation(locationx.getLatitude(),locationx.getLongitude(),10);
                 Address address = list.get(0);
                 city = address.getAdminArea();
-            } catch (IOException e) {
+            } catch (NullPointerException | IOException e) {
 
                 Intent intent = new Intent(this,MainPage.class);
-                Toast.makeText(this, R.string.mapnono,Toast.LENGTH_SHORT);
+                Toast.makeText(this, R.string.mapnono,Toast.LENGTH_SHORT).show();
                 startActivity(intent);
 
             }
         }
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng( locationx.getLatitude(), locationx.getLongitude()),8));
+try {
+    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng( locationx.getLatitude(), locationx.getLongitude()),8));
+}catch (NullPointerException e){
+    Toast.makeText(this,"Güncel konumunuz alınamıyor.",Toast.LENGTH_SHORT).show();
+    return;
+}
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -136,7 +143,7 @@ public class ShowOnMap extends AppCompatActivity implements OnMapReadyCallback {
                     LatLng loc =new LatLng(n.getLat(),n.getLon());
 
                     gMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)).position(loc).title("Name: " + n.getName() +"\n" +"Price: " +  n.getPrice()));
-
+                    //Toast.makeText(ShowOnMap.this, n.getName() + n.getCity() + n.getPrice(), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -156,6 +163,8 @@ public class ShowOnMap extends AppCompatActivity implements OnMapReadyCallback {
 
 
     }
+
+
 
 
 }

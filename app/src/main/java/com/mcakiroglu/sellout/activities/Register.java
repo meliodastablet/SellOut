@@ -101,7 +101,7 @@ boolean flag = false;
 
                     } else {
 
-                        System.out.println(flag + "name2else" + name2 + data.getKey());
+
                     }
                 }
             }
@@ -111,8 +111,7 @@ boolean flag = false;
 
             }
         });
-
-
+        ;
         if (TextUtils.isEmpty(kadi2)) {
             binding.kadi.setError("Bu alanı doldurmak zorunludur.");
             valid = false;}

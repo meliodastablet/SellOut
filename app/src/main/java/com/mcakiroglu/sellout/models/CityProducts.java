@@ -5,16 +5,20 @@ public class CityProducts {
     double lat;
     double lon;
     String name;
-    String price;
+    double price;
     String image1;
+    String id;
+    String category;
 
-    public CityProducts(String city, double lat, double lon, String name, String price, String image1) {
+    public CityProducts(String city, double lat, double lon, String name, double price, String image1, String id, String category) {
         this.city = city;
         this.lat = lat;
         this.lon = lon;
         this.name = name;
         this.price = price;
         this.image1 = image1;
+        this.id = id;
+        this.category = category;
     }
 
     public CityProducts() {
@@ -52,11 +56,11 @@ public class CityProducts {
         this.name = name;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -66,5 +70,21 @@ public class CityProducts {
 
     public void setImage1(String image1) {
         this.image1 = image1;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

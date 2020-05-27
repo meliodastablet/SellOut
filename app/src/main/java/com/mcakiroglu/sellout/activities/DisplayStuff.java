@@ -20,7 +20,8 @@ import java.util.ArrayList;
 public class DisplayStuff extends AppCompatActivity implements View.OnClickListener {
     ActivityDisplayStuffBinding binding;
     Property prop;
-    int k = 0;
+    int k =1;
+    boolean flag = false;
     private DatabaseReference mDatabase;
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseUser user = auth.getCurrentUser();
@@ -84,44 +85,59 @@ public class DisplayStuff extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
 
-        if(v.getId() == R.id.nexti){
-            k++;
-            if(k == 1) {
+        if (v.getId() == R.id.nexti) {
 
-                Glide.with(this).load(a.get(k)).into(binding.imageView6);
-
-            }else if(k==2) {
-                try{
-
-                    Glide.with(this).load(a.get(k)).into(binding.imageView6);
-                }catch (Exception e){
-                    k = 0;
+            if(a.size() == 1) {
+                Glide.with(this).load(a.get(0)).into(binding.imageView6);
+            }else if(a.size() == 2){
+                if(flag){
+                    Glide.with(this).load(a.get(0)).into(binding.imageView6);
+                    flag = !flag;
+                }else{
+                    Glide.with(this).load(a.get(1)).into(binding.imageView6);
+                    flag = !flag;
                 }
-
-
-            }else if(k==3) {
-                try{
+            }else if(a.size() == 3){
+                if(k==1){
                     Glide.with(this).load(a.get(k)).into(binding.imageView6);
-                }catch (Exception e){
-                    k = 0;
+                    k++;
+                }else if(k==2){
+                    Glide.with(this).load(a.get(k)).into(binding.imageView6);
+                    k=0;
+                }else if(k==0){
+                    Glide.with(this).load(a.get(k)).into(binding.imageView6);
+                    k++;
                 }
-
             }else{
-                k=0;
-                Glide.with(this).load(a.get(1)).into(binding.imageView6);
+                if(k==1){
+                    Glide.with(this).load(a.get(k)).into(binding.imageView6);
+                    k++;
+                }else if(k==2){
+                    Glide.with(this).load(a.get(k)).into(binding.imageView6);
+                    k++;
+                }else if(k==0){
+                    Glide.with(this).load(a.get(k)).into(binding.imageView6);
+                    k++;
+                }else if(k==3){
+                    Glide.with(this).load(a.get(k)).into(binding.imageView6);
+                    k=0;
+                }
             }
 
 
 
+
+
+
         }else if(v.getId() == R.id.iptal){
-          // mDatabase.child("usersProducts").child(user.getUid()).child(pid).child("status").setValue(binding.aciklama.getText().toString());
+          // mDatabase.child("usersProducts").child(user.getUid()).child(pid).child("status").setValue("1");
 
         } else if(v.getId() == R.id.msend){
                 Intent intent = new Intent(this,Messaging.class);
                 intent.putExtra("toid",prop.getToID());
                 startActivity(intent);
         }else if(v.getId() == R.id.markassold){
-            //mDatabase.child("usersProducts").child(uid).child(pid).child("comment").setValue(binding.desc.getText().toString());
+            //mDatabase.child("usersProducts").child(uid).child(pid).child("status").setValue("2");
         }
 
     }

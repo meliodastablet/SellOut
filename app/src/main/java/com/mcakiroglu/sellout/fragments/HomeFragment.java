@@ -1,9 +1,13 @@
 package com.mcakiroglu.sellout.fragments;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -188,7 +192,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
 
 
-            } else {
+            } else if(!isLocationEnabled(getContext())){
+                Toast.makeText(getContext(),"Lütfen telefon ayarlarından konum hizmetini açın.",Toast.LENGTH_SHORT).show();
+            } else{
                 location();
             }
 
@@ -223,5 +229,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         Intent intent = new Intent(getContext(), ShowOnMap.class);
         startActivity(intent);
 
+    }
+    public static Boolean isLocationEnabled(Context context)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+// This is new method provided in API 28
+            LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+            return lm.isLocationEnabled();
+        } else {
+// This is Deprecated in API 28
+            int mode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE,
+                    Settings.Secure.LOCATION_MODE_OFF);
+            return  (mode != Settings.Secure.LOCATION_MODE_OFF);
+
+        }
     }
 }

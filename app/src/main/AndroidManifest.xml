@@ -18,25 +18,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.SplashActivity">
+        <activity android:name=".activities.SplashActivity"  android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.Messaging" />
-        <activity android:name=".activities.ShowOnMap" />
+        <activity android:name=".activities.Messaging" android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden" />
+        <activity android:name=".activities.ShowOnMap" android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCbMerCl2AE6U_c2oujuuV6h3XlwMx1_Mg" />
 
-        <activity android:name=".activities.MyLocation" />
-        <activity android:name=".activities.DisplayStuff" />
-        <activity android:name=".activities.Profile" />
-        <activity android:name=".activities.Messages" />
-        <activity android:name=".activities.NewStuff" />
+        <activity android:name=".activities.MyLocation" android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden" />
+        <activity android:name=".activities.DisplayStuff" android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden" />
+        <activity android:name=".activities.Profile" android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity android:name=".activities.Messages" android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity android:name=".activities.NewStuff" android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
 
         <service
             android:name=".MyFirebaseMessagingService"
@@ -47,14 +56,19 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".activities.MyStuff" />
-        <activity
+        <activity android:name=".activities.MyStuff" android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
             android:name=".activities.MainPage"
             android:label="@string/title_activity_main_page"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.ForgotPassword" />
-        <activity android:name=".activities.Register" />
-        <activity android:name=".activities.Login"/>
+        <activity android:name=".activities.ForgotPassword" android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity android:name=".activities.Register" android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity android:name=".activities.Login" android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
 
 
     </application>

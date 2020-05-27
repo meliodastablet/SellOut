@@ -35,6 +35,7 @@ import com.mcakiroglu.sellout.databinding.AlertBinding;
 
 import java.lang.reflect.Array;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 public class Profile extends AppCompatActivity implements View.OnClickListener{
     ActivityProfileBinding binding;
@@ -187,7 +188,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
             Intent intent = new Intent();
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+            startActivityForResult(Intent.createChooser(intent, "Resim Seçin"), PICK_IMAGE_REQUEST);
 
 
 
@@ -222,43 +223,64 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
         mDatabase = database.getReference("users");
         switch (b) {
             case 1:
-                user.updateEmail(m_Text).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(Profile.this, R.string.cepad, Toast.LENGTH_SHORT).show();
-                            mDatabase.child(user.getUid()).child("email").setValue(m_Text);
+                if(m_Text.isEmpty()){
+                    Toast.makeText(Profile.this,"Uygun olmayan mail adresi, işlem iptal edildi.",Toast.LENGTH_SHORT).show();
 
+                }else{
+                    user.updateEmail(m_Text).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(Profile.this, R.string.cepad, Toast.LENGTH_SHORT).show();
+                                mDatabase.child(user.getUid()).child("email").setValue(m_Text);
+
+                            }
                         }
-                    }
-                });
+                    });
+                }
+
                 break;
             case 2:
                 final String mt=user.getDisplayName();
-                UserProfileChangeRequest profile2 = new UserProfileChangeRequest.Builder().setDisplayName(m_Text).build();
-                user.updateProfile(profile2).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(Profile.this, R.string.cnn, Toast.LENGTH_SHORT).show();
+                if(m_Text.isEmpty()){
+                    Toast.makeText(Profile.this,"Uygun olmayan kullanıcı adı, işlem iptal edildi.",Toast.LENGTH_SHORT).show();
+
+                }else {
+                    UserProfileChangeRequest profile2 = new UserProfileChangeRequest.Builder().setDisplayName(m_Text).build();
+                    user.updateProfile(profile2).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(Profile.this, R.string.cnn, Toast.LENGTH_SHORT).show();
 
 
-                            mDatabase.child(user.getUid()).child("username").setValue(m_Text);
-                            database.getReference("usernames").child(mt).removeValue();
-                            database.getReference("usernames").child(m_Text).setValue(user.getUid());
+                                mDatabase.child(user.getUid()).child("username").setValue(m_Text);
+                                database.getReference("usernames").child(mt).removeValue();
+                                database.getReference("usernames").child(m_Text).setValue(user.getUid());
 
+                            }
                         }
-                    }
-                });
+                    });
+                }
                 break;
             case 3:
-                user.updatePassword(m_Text).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful())
-                            Toast.makeText(Profile.this, R.string.cpasss, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                if(m_Text.isEmpty()){
+                    Toast.makeText(Profile.this,"En az 8 haneli rakamlar ve harflerden oluşan bir parola seçin",Toast.LENGTH_SHORT).show();
+
+                }else if(!isPasswordValid(m_Text)){
+                    Toast.makeText(Profile.this,"En az 8 haneli rakamlar ve harflerden oluşan bir parola seçin",Toast.LENGTH_SHORT).show();
+
+                }
+
+                else {
+                    user.updatePassword(m_Text).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful())
+                                Toast.makeText(Profile.this, R.string.cpasss, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
                 break;
 
         }
@@ -297,5 +319,11 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
             });
 
 
+    }
+
+    private boolean isPasswordValid(String password) {
+        Pattern regex = Pattern.compile("^(?=.*\\d)(?=.*[a-zA-Z]).{8,}");
+
+        return regex.matcher(password).find();
     }
 }
