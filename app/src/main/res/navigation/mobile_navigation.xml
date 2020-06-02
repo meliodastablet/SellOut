@@ -10,24 +10,8 @@
         android:name="com.mcakiroglu.sellout.fragments.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home">
-
-        <action
-            android:id="@+id/action_HomeFragment_to_HomeSecondFragment"
-            app:destination="@id/nav_home_second" />
     </fragment>
-    <fragment
-        android:id="@+id/nav_home_second"
-        android:name="com.mcakiroglu.sellout.ui.home.HomeSecondFragment"
-        android:label="@string/home_second"
-        tools:layout="@layout/fragment_home_second">
-        <action
-            android:id="@+id/action_HomeSecondFragment_to_HomeFragment"
-            app:destination="@id/nav_home" />
 
-        <argument
-            android:name="myArg"
-            app:argType="string" />
-    </fragment>
 
     <fragment
         android:id="@+id/nav_gallery"
@@ -42,8 +26,31 @@
         tools:layout="@layout/fragment_ceptelefonu" />
 
     <fragment
-        android:id="@+id/nav_araba"
-        android:name="com.mcakiroglu.sellout.fragments.ArabaFragment"
-        android:label="@string/menu_araba"
-        tools:layout="@layout/fragment_araba" />
+    android:id="@+id/nav_araba"
+    android:name="com.mcakiroglu.sellout.fragments.ArabaFragment"
+    android:label="@string/menu_araba"
+    tools:layout="@layout/fragment_araba" />
+    <fragment
+        android:id="@+id/nav_ilan"
+        android:name="com.mcakiroglu.sellout.fragments.MyStuff"
+        android:label="İlanlarım"
+        tools:layout="@layout/activity_my_stuff" />
+
+    <fragment
+    android:id="@+id/nav_mesaj"
+    android:name="com.mcakiroglu.sellout.fragments.Messages"
+    android:label="Mesajlarım"
+    tools:layout="@layout/activity_messages" />
+
+    <fragment
+        android:id="@+id/nav_yeni"
+        android:name="com.mcakiroglu.sellout.fragments.NewStuff"
+        android:label="İlan Ver"
+        tools:layout="@layout/activity_new_stuff" />
+
+    <fragment
+        android:id="@+id/nav_profil"
+        android:name="com.mcakiroglu.sellout.fragments.Profile"
+        android:label="Profil"
+        tools:layout="@layout/activity_profile" />
 </navigation>

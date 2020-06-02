@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.Messages"
-    android:background="@mipmap/back_login"
+    tools:context=".fragments.Messages"
+    android:background="@color/colorPrimary"
     >
 
 

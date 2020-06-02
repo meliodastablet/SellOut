@@ -20,12 +20,12 @@ import com.mcakiroglu.sellout.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyStuffAdapter extends RecyclerView.Adapter<MyStuffAdapter.MyViewHolder> {
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHolder> {
 
     Context context;
     ArrayList<Property> data;
 
-    public MyStuffAdapter(Context context, List<Property> data) {
+    public ProductAdapter(Context context, List<Property> data) {
         this.context = context;
         this.data =(ArrayList<Property>) data;
     }

@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/araba"
     android:layout_height="match_parent"
-    tools:context=".activities.MyStuff">
+    tools:context=".fragments.MyStuff">
 
     <android.widget.Button
         android:id="@+id/button3"

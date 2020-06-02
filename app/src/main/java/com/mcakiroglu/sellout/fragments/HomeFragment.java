@@ -11,15 +11,12 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,10 +28,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mcakiroglu.sellout.R;
-import com.mcakiroglu.sellout.activities.MainPage;
 import com.mcakiroglu.sellout.models.Property;
 import com.mcakiroglu.sellout.activities.ShowOnMap;
-import com.mcakiroglu.sellout.adapter.MyStuffAdapter;
+import com.mcakiroglu.sellout.adapter.ProductAdapter;
 import com.mcakiroglu.sellout.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
@@ -67,6 +63,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
         binding = null;
     }
 
@@ -157,9 +154,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         if(a.isEmpty() && active){
 
         }
-        MyStuffAdapter adapter = new MyStuffAdapter(getContext(),a.get(0));
-        MyStuffAdapter adapter2 = new MyStuffAdapter(getContext(),a.get(1));
-        MyStuffAdapter adapter3 = new MyStuffAdapter(getContext(),a.get(2));
+        ProductAdapter adapter = new ProductAdapter(getContext(),a.get(0));
+        ProductAdapter adapter2 = new ProductAdapter(getContext(),a.get(1));
+        ProductAdapter adapter3 = new ProductAdapter(getContext(),a.get(2));
         rw1.setAdapter(adapter2);
         rw2.setAdapter(adapter);
         rw3.setAdapter(adapter3);

@@ -1,9 +1,11 @@
-package com.mcakiroglu.sellout.activities;
+package com.mcakiroglu.sellout.fragments;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.app.Activity;
@@ -12,8 +14,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -25,15 +29,22 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mcakiroglu.sellout.R;
+import com.mcakiroglu.sellout.activities.MainPage;
+import com.mcakiroglu.sellout.activities.MyLocation;
 import com.mcakiroglu.sellout.databinding.ActivityNewStuffBinding;
+import com.mcakiroglu.sellout.fragments.MyStuff;
 import com.mcakiroglu.sellout.models.CityProducts;
+import com.mcakiroglu.sellout.models.Property;
 import com.mcakiroglu.sellout.models.UserProducts;
 
 import java.text.SimpleDateFormat;
@@ -41,7 +52,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class NewStuff extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+import static android.app.Activity.RESULT_OK;
+
+public class NewStuff extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     BottomNavigationView bnw;
     int LAUNCH_SECOND_ACTIVITY = 1;
     ActivityNewStuffBinding binding;
@@ -63,12 +76,31 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
     String uid,city;
     double lat=99999,lon;
     private final int PICK_IMAGE_REQUEST = 99;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
         binding = ActivityNewStuffBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
-        setContentView(view);
+
+
+
+
+        return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        init();
+        handlers();
+    }
+    protected void init() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         binding.imageView2.setOnClickListener(this);
         binding.imageView3.setOnClickListener(this);
@@ -76,41 +108,8 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
         binding.imageView5.setOnClickListener(this);
         binding.save.setOnClickListener(this);
         binding.address.setOnClickListener(this);
-
-        bnw = (BottomNavigationView) findViewById(R.id.botnav2);
-        bnw.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if(item.getItemId() == R.id.ananas){
-                    Intent intent = new Intent(NewStuff.this,MainPage.class);
-                    startActivity(intent);
-                    return true;
-                }else if(item.getItemId() == R.id.ilans){
-                    Intent intent = new Intent(NewStuff.this, MyStuff.class);
-                    startActivity(intent);
-                    return true;
-                }else if(item.getItemId() == R.id.ilanver){
-                    Intent intent = new Intent(NewStuff.this, NewStuff.class);
-                    startActivity(intent);
-                    return true;
-                }else if(item.getItemId() == R.id.messages){
-                    Intent intent = new Intent(NewStuff.this, Messages.class);
-                    startActivity(intent);
-                    return true;
-                }else if(item.getItemId() == R.id.profile){
-                    Intent intent = new Intent(NewStuff.this, Profile.class);
-                    startActivity(intent);
-                    return true;
-                }
-                else{
-                    return false;
-                }
-
-            }
-        });
-
         spinner = binding.spinner;
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.array_spin, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -121,6 +120,12 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
         uid=user.getUid();
 
     }
+
+    protected void handlers() {
+
+    }
+
+
 
     @Override
     public void onClick(View v) {
@@ -169,12 +174,12 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
                 flag = false;
             }
             if (spinnerres.equals("Kategori Seçiniz")) {
-                Toast.makeText(this, R.string.ccat, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.ccat, Toast.LENGTH_SHORT).show();
                 flag = false;
             }
             //if resim
             if (filePath2 == null && filePath3 == null && filePath4 == null && filePath5 == null) {
-                Toast.makeText(this, R.string.cpppp, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.cpppp, Toast.LENGTH_SHORT).show();
             } else {
                 if (filePath2 != null)
                     filePathr.add(filePath2);
@@ -220,8 +225,8 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
                 }catch (Exception e){
 
                 }finally {
-                    Intent i = new Intent(this,MainPage.class);
-                    Toast.makeText(this,"İlan yükleme başarılı.",Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(getContext(), MainPage.class);
+                    Toast.makeText(getContext(),"İlan yükleme başarılı.",Toast.LENGTH_SHORT).show();
                     startActivity(i);
                 }
 
@@ -232,7 +237,7 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
 
             }
         }else if(v.getId() == R.id.address){
-            if (ContextCompat.checkSelfPermission(this,
+            if (ContextCompat.checkSelfPermission(getContext(),
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
 
@@ -240,7 +245,7 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
 
 
 
-                    ActivityCompat.requestPermissions(this,
+                    ActivityCompat.requestPermissions(getActivity(),
                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                             MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
 
@@ -272,7 +277,7 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null )
@@ -281,23 +286,23 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
 
             if(jk == 0){
                 filePath2 = data.getData() ;
-                Glide.with(getApplicationContext()).load(filePath2.toString()).into(binding.imageView2);
+                Glide.with(getContext()).load(filePath2.toString()).into(binding.imageView2);
             }else if(jk == 1){
                 filePath3 = data.getData() ;
-                Glide.with(getApplicationContext()).load(filePath3.toString()).into(binding.imageView3);
+                Glide.with(getContext()).load(filePath3.toString()).into(binding.imageView3);
             }else if(jk == 2){
                 filePath4 = data.getData() ;
-                Glide.with(getApplicationContext()).load(filePath4.toString()).into(binding.imageView4);
+                Glide.with(getContext()).load(filePath4.toString()).into(binding.imageView4);
             }else if(jk == 3){
                 filePath5 = data.getData() ;
-                Glide.with(getApplicationContext()).load(filePath5.toString()).into(binding.imageView5);
+                Glide.with(getContext()).load(filePath5.toString()).into(binding.imageView5);
             }
 
 
             flag2 = true;
         }
         if (requestCode == LAUNCH_SECOND_ACTIVITY) {
-            if(resultCode == Activity.RESULT_OK){
+            if(resultCode == RESULT_OK){
                 result=data.getStringExtra("result");
                 city=data.getStringExtra("city");
                 binding.address2.setText(result);
@@ -317,7 +322,7 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
 
 
             final ProgressDialog progressDialog
-                    = new ProgressDialog(this);
+                    = new ProgressDialog(getContext());
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
             for(int i=0; i<filePathr.size();i++) {
@@ -351,7 +356,7 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
                                 // Error, Image not uploaded
                                 progressDialog.dismiss();
                                 Toast
-                                        .makeText(NewStuff.this,
+                                        .makeText(getContext(),
                                                 "Failed " + e.getMessage(),
                                                 Toast.LENGTH_SHORT)
                                         .show();
@@ -430,7 +435,7 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
-                   Toast.makeText(this, R.string.allowloc,Toast.LENGTH_SHORT).show();
+                   Toast.makeText(getContext(), R.string.allowloc,Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
@@ -441,7 +446,7 @@ public class NewStuff extends AppCompatActivity implements View.OnClickListener,
 
     public void location(){
 
-        Intent intent = new Intent(this,MyLocation.class);
+        Intent intent = new Intent(getContext(), MyLocation.class);
         startActivityForResult(intent,LAUNCH_SECOND_ACTIVITY);
 
     }

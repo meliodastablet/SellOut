@@ -1,17 +1,20 @@
-package com.mcakiroglu.sellout.activities;
+package com.mcakiroglu.sellout.fragments;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,21 +26,30 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mcakiroglu.sellout.R;
+import com.mcakiroglu.sellout.activities.Login;
+import com.mcakiroglu.sellout.databinding.ActivityMyStuffBinding;
 import com.mcakiroglu.sellout.databinding.ActivityProfileBinding;
-import com.mcakiroglu.sellout.databinding.AlertBinding;
+import com.mcakiroglu.sellout.fragments.Messages;
+import com.mcakiroglu.sellout.fragments.MyStuff;
+import com.mcakiroglu.sellout.fragments.NewStuff;
+import com.mcakiroglu.sellout.models.Property;
 
-import java.lang.reflect.Array;
 import java.util.Random;
 import java.util.regex.Pattern;
 
-public class Profile extends AppCompatActivity implements View.OnClickListener{
+import static android.app.Activity.RESULT_OK;
+
+public class Profile extends Fragment implements View.OnClickListener{
     ActivityProfileBinding binding;
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseUser user = auth.getCurrentUser();
@@ -54,45 +66,32 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
 
     private final int PICK_IMAGE_REQUEST = 71;
     int a = 0;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
+
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
         binding = ActivityProfileBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
-        setContentView(view);
 
-        bnw = (BottomNavigationView) findViewById(R.id.botnav5);
-        bnw.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if(item.getItemId() == R.id.ananas){
-                    Intent intent = new Intent(Profile.this,MainPage.class);
-                    startActivity(intent);
-                    return true;
-                }else if(item.getItemId() == R.id.ilans){
-                    Intent intent = new Intent(Profile.this, MyStuff.class);
-                    startActivity(intent);
-                    return true;
-                }else if(item.getItemId() == R.id.ilanver){
-                    Intent intent = new Intent(Profile.this, NewStuff.class);
-                    startActivity(intent);
-                    return true;
-                }else if(item.getItemId() == R.id.messages){
-                    Intent intent = new Intent(Profile.this, Messages.class);
-                    startActivity(intent);
-                    return true;
-                }else if(item.getItemId() == R.id.profile){
-                    Intent intent = new Intent(Profile.this, Profile.class);
-                    startActivity(intent);
-                    return true;
-                }
-                else{
-                    return false;
-                }
 
-            }
-        });
 
+
+        return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        init();
+        handlers();
+    }
+    protected void init() {
         binding.cadres.setOnClickListener(this);
         binding.cname.setOnClickListener(this);
         binding.cpass.setOnClickListener(this);
@@ -103,7 +102,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
         binding.emaill.setText(user.getEmail());
         Glide.with(this).load(user.getPhotoUrl()).into(binding.imageView);
 
-        alertDialog = new AlertDialog.Builder(this);
+        alertDialog = new AlertDialog.Builder(getContext());
 
         alertDialog.setView(R.layout.alert);
 
@@ -111,10 +110,10 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
 
 
         alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
         });
 
         alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -132,11 +131,12 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
             }
         });
 
+    }
 
-
-
+    protected void handlers() {
 
     }
+
 
     @Override
     public void onClick(View v) {
@@ -176,7 +176,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
-                        Toast.makeText(Profile.this, R.string.vmailsent,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.vmailsent,Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -199,14 +199,14 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
         }else if(v.getId() == R.id.logout){
             FirebaseMessaging.getInstance().unsubscribeFromTopic(auth.getUid());
             auth.signOut();
-            Toast.makeText(this, R.string.succext,Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this,Login.class);
+            Toast.makeText(getContext(), R.string.succext,Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getContext(), Login.class);
             startActivity(intent);
         }
 
     }
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null ) {
@@ -224,14 +224,14 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
         switch (b) {
             case 1:
                 if(m_Text.isEmpty()){
-                    Toast.makeText(Profile.this,"Uygun olmayan mail adresi, işlem iptal edildi.",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"Uygun olmayan mail adresi, işlem iptal edildi.",Toast.LENGTH_SHORT).show();
 
                 }else{
                     user.updateEmail(m_Text).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(Profile.this, R.string.cepad, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), R.string.cepad, Toast.LENGTH_SHORT).show();
                                 mDatabase.child(user.getUid()).child("email").setValue(m_Text);
 
                             }
@@ -243,7 +243,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
             case 2:
                 final String mt=user.getDisplayName();
                 if(m_Text.isEmpty()){
-                    Toast.makeText(Profile.this,"Uygun olmayan kullanıcı adı, işlem iptal edildi.",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"Uygun olmayan kullanıcı adı, işlem iptal edildi.",Toast.LENGTH_SHORT).show();
 
                 }else {
                     UserProfileChangeRequest profile2 = new UserProfileChangeRequest.Builder().setDisplayName(m_Text).build();
@@ -251,7 +251,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(Profile.this, R.string.cnn, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), R.string.cnn, Toast.LENGTH_SHORT).show();
 
 
                                 mDatabase.child(user.getUid()).child("username").setValue(m_Text);
@@ -265,10 +265,10 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
                 break;
             case 3:
                 if(m_Text.isEmpty()){
-                    Toast.makeText(Profile.this,"En az 8 haneli rakamlar ve harflerden oluşan bir parola seçin",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"En az 8 haneli rakamlar ve harflerden oluşan bir parola seçin",Toast.LENGTH_SHORT).show();
 
                 }else if(!isPasswordValid(m_Text)){
-                    Toast.makeText(Profile.this,"En az 8 haneli rakamlar ve harflerden oluşan bir parola seçin",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"En az 8 haneli rakamlar ve harflerden oluşan bir parola seçin",Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -277,7 +277,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful())
-                                Toast.makeText(Profile.this, R.string.cpasss, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), R.string.cpasss, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -295,7 +295,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Toast
-                            .makeText(Profile.this,
+                            .makeText(getContext(),
                                     "Image Uploaded!!",
                                     Toast.LENGTH_SHORT)
                             .show();
@@ -307,7 +307,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
-                                        Toast.makeText(Profile.this, R.string.cpp,Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getContext(), R.string.cpp,Toast.LENGTH_SHORT).show();
 
                                     }
                                 }
@@ -326,4 +326,6 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
 
         return regex.matcher(password).find();
     }
+
+
 }

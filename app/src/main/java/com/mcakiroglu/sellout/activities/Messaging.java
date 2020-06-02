@@ -204,7 +204,7 @@ for(int i=0;i<readid.size();i++){
 
 
 }
-        startActivity(new Intent(Messaging.this,Messages.class));
+        startActivity(new Intent(Messaging.this,MainPage.class));
     }
 
     public void notification(String uid,String NOTIFICATION_TITLE, String NOTIFICATION_MESSAGE, String type){

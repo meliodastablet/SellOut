@@ -1,15 +1,16 @@
-package com.mcakiroglu.sellout.activities;
+package com.mcakiroglu.sellout.fragments;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,13 +21,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mcakiroglu.sellout.R;
-import com.mcakiroglu.sellout.adapter.MyStuffAdapter;
+import com.mcakiroglu.sellout.adapter.ProductAdapter;
 import com.mcakiroglu.sellout.databinding.ActivityMyStuffBinding;
 import com.mcakiroglu.sellout.models.Property;
 
 import java.util.ArrayList;
 
-public class MyStuff extends AppCompatActivity {
+public class MyStuff extends Fragment {
     RecyclerView recyclerView;
     ActivityMyStuffBinding binding;
     BottomNavigationView bnw;
@@ -35,51 +36,41 @@ public class MyStuff extends AppCompatActivity {
     private DatabaseReference mDatabase;
     static boolean active = false;
     String uid;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
         binding = ActivityMyStuffBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
-        setContentView(view);
+
+
+
+
+        return view;
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        init();
+        handlers();
+    }
+    protected void init() {
         recyclerView = binding.recyclerView;
 
-        bnw = (BottomNavigationView) findViewById(R.id.botnav3);
-        bnw.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if(item.getItemId() == R.id.ananas){
-                    Intent intent = new Intent(MyStuff.this,MainPage.class);
-                    startActivity(intent);
-                    return true;
-                }else if(item.getItemId() == R.id.ilans){
-                    Intent intent = new Intent(MyStuff.this, MyStuff.class);
-                    startActivity(intent);
-                    return true;
-                }else if(item.getItemId() == R.id.ilanver){
-                    Intent intent = new Intent(MyStuff.this, NewStuff.class);
-                    startActivity(intent);
-                    return true;
-                }else if(item.getItemId() == R.id.messages){
-                    Intent intent = new Intent(MyStuff.this, Messages.class);
-                    startActivity(intent);
-                    return true;
-                }else if(item.getItemId() == R.id.profile){
-                    Intent intent = new Intent(MyStuff.this, Profile.class);
-                    startActivity(intent);
-                    return true;
-                }
-                else{
-                    return false;
-                }
-
-            }
-        });
 
         mAuth = FirebaseAuth.getInstance();
         final FirebaseUser user = mAuth.getCurrentUser();
         uid=user.getUid();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+    }
+
+    protected void handlers() {
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -101,27 +92,21 @@ public class MyStuff extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
-
-
-
     }
+
+
 
     public void custom(ArrayList<Property> a){
 
 
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         if(a.isEmpty() && active){
-            Toast.makeText(MyStuff.this, R.string.noprop,
+            Toast.makeText(getContext(), R.string.noprop,
                     Toast.LENGTH_SHORT).show();
         }
-        MyStuffAdapter adapter = new MyStuffAdapter(this,a);
+        ProductAdapter adapter = new ProductAdapter(getContext(),a);
         recyclerView.setAdapter(adapter);
 
 

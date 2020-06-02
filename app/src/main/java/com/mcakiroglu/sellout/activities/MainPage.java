@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,10 +25,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mcakiroglu.sellout.R;
+
 import com.mcakiroglu.sellout.databinding.ActivityMainPageBinding;
-import com.mcakiroglu.sellout.databinding.NavHeaderMainPageBinding;
+import com.mcakiroglu.sellout.fragments.ArabaFragment;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -137,9 +142,11 @@ public class MainPage extends AppCompatActivity{
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
                 .setDrawerLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        final NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+
 
 
         bnw = (BottomNavigationView) findViewById(R.id.botnav);
@@ -147,16 +154,14 @@ public class MainPage extends AppCompatActivity{
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if(item.getItemId() == R.id.ananas){
-                    Intent intent = new Intent(MainPage.this,MainPage.class);
-                    startActivity(intent);
+                    navController.navigate(R.id.nav_home);
                     return true;
                 }else if(item.getItemId() == R.id.ilans){
-                    Intent intent = new Intent(MainPage.this, MyStuff.class);
-                    startActivity(intent);
-                    return true;
+
+                   navController.navigate(R.id.nav_ilan);
+                   return true;
                 }else if(item.getItemId() == R.id.ilanver){
-                    Intent intent = new Intent(MainPage.this, NewStuff.class);
-                    startActivity(intent);
+                    navController.navigate(R.id.nav_yeni);
                     return true;
                 }else if(item.getItemId() == R.id.messages){
 
@@ -168,12 +173,10 @@ public class MainPage extends AppCompatActivity{
 
                     }
 
-                    Intent intent = new Intent(MainPage.this, Messages.class);
-                    startActivity(intent);
+                    navController.navigate(R.id.nav_mesaj);
                     return true;
                 }else if(item.getItemId() == R.id.profile){
-                    Intent intent = new Intent(MainPage.this, Profile.class);
-                    startActivity(intent);
+                    navController.navigate(R.id.nav_profil);
                     return true;
                 }
                 else{

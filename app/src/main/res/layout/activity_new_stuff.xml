@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/colorPrimary"
-    tools:context=".activities.NewStuff">
+    tools:context=".fragments.NewStuff">
 
     <TextView
         android:id="@+id/textView4"

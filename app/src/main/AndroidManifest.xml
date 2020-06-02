@@ -40,11 +40,11 @@
             android:configChanges="orientation|keyboardHidden" />
         <activity android:name=".activities.DisplayStuff" android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden" />
-        <activity android:name=".activities.Profile" android:screenOrientation="portrait"
+        <activity android:name=".fragments.Profile" android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"/>
-        <activity android:name=".activities.Messages" android:screenOrientation="portrait"
+        <activity android:name=".fragments.Messages" android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"/>
-        <activity android:name=".activities.NewStuff" android:screenOrientation="portrait"
+        <activity android:name=".fragments.NewStuff" android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"/>
 
         <service
@@ -56,7 +56,7 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".activities.MyStuff" android:screenOrientation="portrait"
+        <activity android:name=".fragments.MyStuff" android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"/>
         <activity android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"
