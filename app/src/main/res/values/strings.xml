@@ -59,6 +59,9 @@
     <string name="elektronik">Elektronik</string>
     <string name="ceptelefonu">Cep Telefonu</string>
     <string name="araba">Araba</string>
+    <string name="passrule">Lütfen en az 8 haneli, harf ve rakamlardan oluşan bir parola girin.</string>
+    <string name="err1">Bu alanı doldurmak zorunludur.</string>
+    <string name="mailrule">Lütfen uygun bir e-mail adresi girin.</string>
 
 
 </resources>

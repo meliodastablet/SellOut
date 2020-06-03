@@ -52,10 +52,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         String email2 = binding.username.getText().toString();
         if (TextUtils.isEmpty(email2)) {
-            binding.username.setError("Bu alanı doldurmak zorunludur.");
+            binding.username.setError(getString(R.string.err1));
             valid = false;
         } else if(!isEmailValid(email2)){
-            binding.username.setError("Lütfen uygun bir e-mail adresi girin.");
+            binding.username.setError(getString(R.string.mailrule));
             valid = false;
         }
         else {
@@ -64,10 +64,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         String password2 = binding.password.getText().toString();
         if (TextUtils.isEmpty(password2)) {
-            binding.password.setError("Bu alanı doldurmak zorunludur.");
+            binding.password.setError(getString(R.string.err1));
             valid = false;
         } else if (!isPasswordValid(password2)) {
-            binding.password.setError("Lütfen en az 8 haneli, harf ve rakamlardan oluşan bir parola girin.");
+            binding.password.setError(getString(R.string.passrule));
             valid = false;
         }
         else {

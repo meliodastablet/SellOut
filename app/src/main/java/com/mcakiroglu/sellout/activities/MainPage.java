@@ -75,6 +75,109 @@ public class MainPage extends AppCompatActivity{
         ref = database.getReference("messages");
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+
+
+        checkMessages();
+
+
+
+        tw2.setText(user.getDisplayName());
+        tw.setText(user.getEmail());
+        Glide.with(this).load(user.getPhotoUrl()).into(iw);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        mAppBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                .setDrawerLayout(drawer)
+                .build();
+        final NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+        NavigationUI.setupWithNavController(navigationView, navController);
+
+
+
+
+        bnw = (BottomNavigationView) findViewById(R.id.botnav);
+        bnw.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if(item.getItemId() == R.id.ananas){
+                    navController.navigate(R.id.nav_home);
+                    checkMessages();
+                    return true;
+                }else if(item.getItemId() == R.id.ilans){
+
+                   navController.navigate(R.id.nav_ilan);
+                    checkMessages();
+                   return true;
+                }else if(item.getItemId() == R.id.ilanver){
+                    navController.navigate(R.id.nav_yeni);
+                    checkMessages();
+                    return true;
+                }else if(item.getItemId() == R.id.messages){
+
+                    try{
+                        if(bnw.getBadge(R.id.messages).hasNumber()){
+                            bnw.removeBadge(R.id.messages);
+                        }
+                    }catch (Exception e){
+
+                    }
+
+                    navController.navigate(R.id.nav_mesaj);
+                    return true;
+                }else if(item.getItemId() == R.id.profile){
+                    navController.navigate(R.id.nav_profil);
+                    checkMessages();
+                    return true;
+                }
+                else{
+                    return false;
+                }
+
+            }
+        });
+        //
+
+
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_page, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
+                || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(auth.getUid());
+                auth.signOut();
+                Toast.makeText(this, R.string.succext,Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this,Login.class);
+                startActivity(intent);
+                return true;
+        }
+        return false;
+    }
+
+    private void checkMessages(){
+
         ref.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -124,99 +227,6 @@ public class MainPage extends AppCompatActivity{
 
 
         });
-
-
-
-
-        tw2.setText(user.getDisplayName());
-        tw.setText(user.getEmail());
-        Glide.with(this).load(user.getPhotoUrl()).into(iw);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
-                .setDrawerLayout(drawer)
-                .build();
-        final NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
-
-
-
-
-        bnw = (BottomNavigationView) findViewById(R.id.botnav);
-        bnw.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if(item.getItemId() == R.id.ananas){
-                    navController.navigate(R.id.nav_home);
-                    return true;
-                }else if(item.getItemId() == R.id.ilans){
-
-                   navController.navigate(R.id.nav_ilan);
-                   return true;
-                }else if(item.getItemId() == R.id.ilanver){
-                    navController.navigate(R.id.nav_yeni);
-                    return true;
-                }else if(item.getItemId() == R.id.messages){
-
-                    try{
-                        if(bnw.getBadge(R.id.messages).hasNumber()){
-                            bnw.removeBadge(R.id.messages);
-                        }
-                    }catch (Exception e){
-
-                    }
-
-                    navController.navigate(R.id.nav_mesaj);
-                    return true;
-                }else if(item.getItemId() == R.id.profile){
-                    navController.navigate(R.id.nav_profil);
-                    return true;
-                }
-                else{
-                    return false;
-                }
-
-            }
-        });
-        //
-
-
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_page, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                FirebaseMessaging.getInstance().unsubscribeFromTopic(auth.getUid());
-                auth.signOut();
-                Toast.makeText(this, R.string.succext,Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this,Login.class);
-                startActivity(intent);
-                return true;
-        }
-        return false;
     }
 
 

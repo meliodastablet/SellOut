@@ -1,4 +1,4 @@
-package com.mcakiroglu.sellout;
+package com.mcakiroglu.sellout.services;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -112,7 +112,7 @@ return;
         super.onNewToken(token);
 
 
-        // Once the token is generated, subscribe to topic with the userId
+
 
 
 

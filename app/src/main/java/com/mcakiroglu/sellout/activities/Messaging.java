@@ -29,7 +29,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.mcakiroglu.sellout.MySingleton;
+import com.mcakiroglu.sellout.services.MySingleton;
 import com.mcakiroglu.sellout.R;
 import com.mcakiroglu.sellout.models.Message;
 
